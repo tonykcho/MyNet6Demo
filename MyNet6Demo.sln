@@ -3,6 +3,10 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30114.105
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyNet6Demo.Api", "MyNet6Demo.Api\MyNet6Demo.Api.csproj", "{D79D7071-68F8-4C66-A877-8387CB0469AD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyNet6Demo.UnitTest", "MyNet6Demo.UnitTest\MyNet6Demo.UnitTest.csproj", "{A20698AA-0FFC-4B83-AD06-057589131239}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -10,5 +14,15 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D79D7071-68F8-4C66-A877-8387CB0469AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D79D7071-68F8-4C66-A877-8387CB0469AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D79D7071-68F8-4C66-A877-8387CB0469AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D79D7071-68F8-4C66-A877-8387CB0469AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A20698AA-0FFC-4B83-AD06-057589131239}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A20698AA-0FFC-4B83-AD06-057589131239}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A20698AA-0FFC-4B83-AD06-057589131239}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A20698AA-0FFC-4B83-AD06-057589131239}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
