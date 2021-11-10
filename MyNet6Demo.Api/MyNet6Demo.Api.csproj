@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MyNet6Demo.Domain\MyNet6Demo.Domain.csproj" />
+    <ProjectReference Include="..\MyNet6Demo.Infrastructure\MyNet6Demo.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
