@@ -18,6 +18,8 @@ jobs:
       run: dotnet restore
     - name: Build solution
       run: dotnet build --no-restore
+    - name: Test
+      run: dotnet test
   
   # docker:
   #   name: build docker image and push image to docker hub
