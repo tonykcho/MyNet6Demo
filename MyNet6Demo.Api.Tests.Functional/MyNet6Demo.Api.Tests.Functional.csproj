@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MyNet6Demo.Api\MyNet6Demo.Api.csproj" />
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
 
 </Project>
