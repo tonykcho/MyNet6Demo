@@ -1,4 +1,5 @@
 using Serilog;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
@@ -16,10 +17,13 @@ builder.Services.AddAuthentication(options =>
     options.DefaultScheme = "MyNet6CoreDemo";
     options.DefaultAuthenticateScheme = "MyNet6CoreDemo";
     options.DefaultChallengeScheme = "MyNet6CoreDemo";
-}).AddCookie(options =>
+}).AddCookie("MyNet6CoreDemo", options =>
 {
     options.Cookie.Name = "MyNet6CoreDemo.Cookie";
+    options.LoginPath = "/";
 });
+
+builder.Services.AddAuthorization();
 
 builder.Services.AddHttpContextAccessor();
 

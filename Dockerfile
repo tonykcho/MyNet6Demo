@@ -8,6 +8,7 @@ FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 COPY MyNet6Demo.sln .
 COPY ["MyNet6Demo.Api", "MyNet6Demo.Api/"]
+COPY ["MyNet6Demo.Domain", "MyNet6Demo.Domain/"]
 
 RUN dotnet restore "MyNet6Demo.Api/MyNet6Demo.Api.csproj"
 WORKDIR "/src/MyNet6Demo.Api/"

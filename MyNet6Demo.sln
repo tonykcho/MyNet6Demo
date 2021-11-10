@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyNet6Demo.Api.Tests.UnitTe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyNet6Demo.Api.Tests.Functional", "MyNet6Demo.Api.Tests.Functional\MyNet6Demo.Api.Tests.Functional.csproj", "{588F0669-FBBA-4903-A687-A82E210E97C1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyNet6Demo.Domain", "MyNet6Demo.Domain\MyNet6Demo.Domain.csproj", "{0DB736C9-1AC6-4DC4-A47D-A8385EE9BBA8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -38,5 +40,9 @@ Global
 		{588F0669-FBBA-4903-A687-A82E210E97C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{588F0669-FBBA-4903-A687-A82E210E97C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{588F0669-FBBA-4903-A687-A82E210E97C1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0DB736C9-1AC6-4DC4-A47D-A8385EE9BBA8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0DB736C9-1AC6-4DC4-A47D-A8385EE9BBA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0DB736C9-1AC6-4DC4-A47D-A8385EE9BBA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0DB736C9-1AC6-4DC4-A47D-A8385EE9BBA8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
