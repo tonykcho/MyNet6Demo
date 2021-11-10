@@ -10,6 +10,11 @@ jobs:
     services:
       mysql:
         image: mysql/mysql-server
+        # env:
+        #   MYSQL_USER: user
+        #   MYSQL_PASSWORD: password
+        #   MYSQL_ROOT_PASSWORD: rootpassword
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
     steps:
       - name: Pull code
         uses: actions/checkout@v2
