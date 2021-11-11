@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,9 +8,12 @@ namespace MyNet6Demo.Api.Controllers
     public class AlbumsController : ControllerBase
     {
         // [Authorize]
-        public async Task<IActionResult> GetAlbumById(CancellationToken cancellationToken)
+        [HttpGet("{id}", Name = "GetAlbumById")]
+        public async Task<IActionResult> GetAlbumById(int id, CancellationToken cancellationToken)
         {
-            await Task.Delay(10000);
+            // ArgumentNullException.ThrowIfNull(null);
+
+            await Task.Delay(1);
 
             cancellationToken.ThrowIfCancellationRequested();
 

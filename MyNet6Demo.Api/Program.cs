@@ -1,6 +1,8 @@
 using Serilog;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using MyNet6Demo.Infrastructure.DbContexts;
+using MyNet6Demo.Api.Filters;
+using MyNet6Demo.Api.Extensions;
 
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
@@ -11,7 +13,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Host.UseSerilog();
 
-builder.Services.AddControllers();
+builder.Services.AddControllers(options =>
+{
+    options.Filters.Add<ModelStateActionFilter>();
+    options.Filters.Add<HttpGlobalExceptionFilter>();
+});
 
 builder.Services.AddAuthentication(options =>
 {
@@ -31,6 +37,8 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddDbContext<AppDbContext>();
 
 var app = builder.Build();
+
+await app.MigrateSchemaAsync();
 
 // app.UseRouting();
 
