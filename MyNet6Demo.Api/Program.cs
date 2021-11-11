@@ -1,5 +1,6 @@
 using Serilog;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using MyNet6Demo.Infrastructure.DbContexts;
 
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
@@ -26,6 +27,8 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddAuthorization();
 
 builder.Services.AddHttpContextAccessor();
+
+builder.Services.AddDbContext<AppDbContext>();
 
 var app = builder.Build();
 
