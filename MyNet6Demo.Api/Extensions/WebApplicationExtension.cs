@@ -16,10 +16,14 @@ namespace MyNet6Demo.Api.Extensions
                 try
                 {
                     logger.LogInformation("Start Migrating AppDbContext Schema");
+                    
+                    Console.WriteLine("Start Migrating AppDbContext Schema");
 
                     await context.Database.MigrateAsync();
 
                     logger.LogInformation("Migrate AppDbContext Success");
+
+                    Console.WriteLine("Migrate AppDbContext Success");
                 }
                 catch(Exception ex)
                 {
