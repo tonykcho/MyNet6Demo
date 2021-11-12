@@ -21,7 +21,7 @@ namespace MyNet6Demo.Api.Tests.Functional
 
             var responseText = await response.Content.ReadAsStringAsync();
 
-            Assert.AreEqual("Hello World!!", responseText);
+            Assert.AreEqual("Hello World!", responseText);
         }
     }
 
