@@ -18,7 +18,11 @@ namespace MyNet6Demo.Api.Filters
 
             if (context.Exception is UnauthorizedAccessException)
             {
+                context.HttpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
 
+                context.ExceptionHandled = true;
+
+                return;
             }
 
             if (context.Exception is ArgumentNullException)

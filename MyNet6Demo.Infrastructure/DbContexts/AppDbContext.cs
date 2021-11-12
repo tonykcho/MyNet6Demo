@@ -20,7 +20,7 @@ namespace MyNet6Demo.Infrastructure.DbContexts
         protected override void OnConfiguring(DbContextOptionsBuilder builder)
         {
             Console.WriteLine(_configuration.GetConnectionString("App"));
-            
+
             builder.UseMySql(_configuration.GetConnectionString("App"), new MySqlServerVersion(new Version(8, 0, 27)));
         }
 
@@ -33,24 +33,39 @@ namespace MyNet6Demo.Infrastructure.DbContexts
 
         public async Task ExecuteAsync(Func<Task> action)
         {
-            using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+            using (var transaction = await Database.BeginTransactionAsync())
             {
                 await action();
 
-                scope.Complete();
+                await transaction.CommitAsync();
             }
+
+            // using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+            // {
+            //     await action();
+
+            //     scope.Complete();
+            // }
         }
 
         public async Task<TResult> ExecuteAsync<TResult>(Func<Task<TResult>> action)
         {
-            using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+            using (var transaction = await Database.BeginTransactionAsync())
             {
                 TResult result = await action();
 
-                scope.Complete();
+                await transaction.CommitAsync();
 
                 return result;
             }
+            // using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+            // {
+            //     TResult result = await action();
+
+            //     scope.Complete();
+
+            //     return result;
+            // }
         }
     }
 }
