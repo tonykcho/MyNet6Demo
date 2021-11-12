@@ -19,6 +19,8 @@ namespace MyNet6Demo.Infrastructure.DbContexts
 
         protected override void OnConfiguring(DbContextOptionsBuilder builder)
         {
+            Console.WriteLine(_configuration.GetConnectionString("App"));
+            
             builder.UseMySql(_configuration.GetConnectionString("App"), new MySqlServerVersion(new Version(8, 0, 27)));
         }
 
