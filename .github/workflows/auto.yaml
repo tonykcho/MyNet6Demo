@@ -11,7 +11,7 @@ jobs:
       mysql:
         image: mysql/mysql-server
         env:
-          MYSQL_DATABASE: App
+          # MYSQL_DATABASE: App
           MYSQL_HOST: 127.0.0.1
           MYSQL_USER: user
           MYSQL_PASSWORD: password
