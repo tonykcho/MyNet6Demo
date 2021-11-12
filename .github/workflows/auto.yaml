@@ -11,6 +11,8 @@ jobs:
       mysql:
         image: mysql/mysql-server
         env:
+          MYSQL_DATABASE: App
+          MYSQL_HOST: 127.0.0.1
           MYSQL_USER: user
           MYSQL_PASSWORD: password
           MYSQL_ROOT_PASSWORD: password
@@ -19,7 +21,6 @@ jobs:
           - 3306:3306
     steps:
       # - run: mysql -h 127.0.0.1 --port 3306 -u root -ppassword -e 'CREATE DATABASE IF NOT EXISTS test;'
-      - run: mysql -u root -ppassword
       - name: Pull code
         uses: actions/checkout@v2
       - name: Setup .Net
