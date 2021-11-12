@@ -12,8 +12,8 @@ jobs:
         image: mysql/mysql-server
         env:
           MYSQL_USER: user
-          MYSQL_PASSWORD: password
-          MYSQL_ROOT_PASSWORD: password
+          MYSQL_PASSWORD: user_password
+          MYSQL_ROOT_PASSWORD: root_password
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
         ports:
           - 3306:3306
