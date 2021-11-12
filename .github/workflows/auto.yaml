@@ -27,7 +27,7 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore
       - name: Build solution
-        run: dotnet build --no-restore
+        run: dotnet build /nowarn:CS8618 --no-restore
       - name: Test
         run: dotnet test
 
