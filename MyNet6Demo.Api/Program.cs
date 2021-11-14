@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using MyNet6Demo.Infrastructure.DbContexts;
 using MyNet6Demo.Api.Filters;
 using MyNet6Demo.Api.Extensions;
+using MyNet6Demo.Domain.Interfaces;
+using MyNet6Demo.Infrastructure.Repositories;
 
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
@@ -35,6 +37,8 @@ builder.Services.AddAuthorization();
 builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddDbContext<AppDbContext>();
+
+builder.Services.AddScoped<IAlbumRepository, AlbumRepository>();
 
 var app = builder.Build();
 

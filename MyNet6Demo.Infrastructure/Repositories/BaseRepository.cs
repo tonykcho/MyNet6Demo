@@ -16,14 +16,14 @@ namespace MyNet6Demo.Infrastructure.Repositories
 
         public IUnitOfWork UnitOfWork => _context;
 
-        public async Task<T?> GetByIdAsync(int id, CancellationToken cancellationToken)
+        public virtual async Task<T?> GetByIdAsync(int id, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
             return await _context.Set<T>().SingleOrDefaultAsync(x => x.Id == id, cancellationToken);
         }
 
-        public async Task<IEnumerable<T>> GetListAsync(CancellationToken cancellationToken)
+        public virtual async Task<IEnumerable<T>> GetListAsync(CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
