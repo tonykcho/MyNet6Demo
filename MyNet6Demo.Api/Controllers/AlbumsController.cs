@@ -18,8 +18,10 @@ namespace MyNet6Demo.Api.Controllers
 
         // [Authorize]
         [HttpGet("{id}", Name = "GetAlbumById")]
-        public async Task<IActionResult> GetAlbumById(int id, CancellationToken cancellationToken)
+        public async Task<IActionResult> GetAlbumByIdAsync(int id, CancellationToken cancellationToken)
         {
+            // throw new ArgumentException();
+
             cancellationToken.ThrowIfCancellationRequested();
 
             var album = await _albumRepository.GetByIdAsync(id, cancellationToken);
@@ -33,7 +35,7 @@ namespace MyNet6Demo.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateAlbum(CancellationToken cancellationToken)
+        public async Task<IActionResult> CreateAlbumAsync(CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
 

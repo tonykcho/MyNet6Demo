@@ -29,7 +29,11 @@ builder.Services.AddAuthentication(options =>
 }).AddCookie("MyNet6CoreDemo", options =>
 {
     options.Cookie.Name = "MyNet6CoreDemo.Cookie";
-    options.LoginPath = "/";
+    options.Events.OnRedirectToLogin = context =>
+    {
+        context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+        return Task.CompletedTask;
+    };
 });
 
 builder.Services.AddAuthorization();

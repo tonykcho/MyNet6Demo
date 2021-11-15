@@ -16,14 +16,14 @@ namespace MyNet6Demo.Api.Filters
         {
             _logger.LogError(new EventId(context.Exception.HResult), context.Exception, context.Exception.Message);
 
-            if (context.Exception is UnauthorizedAccessException)
-            {
-                context.HttpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
+            // if (context.Exception is UnauthorizedAccessException)
+            // {
+            //     context.HttpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
 
-                context.ExceptionHandled = true;
+            //     context.ExceptionHandled = true;
 
-                return;
-            }
+            //     return;
+            // }
 
             if (context.Exception is ArgumentNullException)
             {
@@ -47,7 +47,15 @@ namespace MyNet6Demo.Api.Filters
                 return;
             }
 
-            context.ExceptionHandled = false;
+            context.HttpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
+
+            IDictionary<string, string> messages = new Dictionary<string, string>();
+
+            messages.Add("Message", "Something went wrong!!");
+
+            await context.HttpContext.Response.WriteAsJsonAsync(messages);
+
+            context.ExceptionHandled = true;
 
             return;
         }
