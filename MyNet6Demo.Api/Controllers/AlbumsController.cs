@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MyNet6Demo.Domain.Exceptions;
 using MyNet6Demo.Domain.Interfaces;
 using MyNet6Demo.Domain.Models;
 
@@ -23,6 +24,8 @@ namespace MyNet6Demo.Api.Controllers
             // throw new ArgumentException();
 
             cancellationToken.ThrowIfCancellationRequested();
+
+            // throw new ArgumentNullException(nameof(id));
 
             var album = await _albumRepository.GetByIdAsync(id, cancellationToken);
 
