@@ -13,5 +13,7 @@ namespace MyNet6Demo.Domain.Interfaces
         Task<bool> SaveChangesAsync(CancellationToken cancellationToken);
 
         IQueryable<T> GetQuery();
+
+        Task AddAsync(T entity, CancellationToken cancellationToken);
     }
 }

@@ -10,6 +10,8 @@ namespace MyNet6Demo.Infrastructure.Configurations
         {
             builder
                 .HasKey(album => album.Id);
+                
+            builder.Property(album => album.Guid);
 
             builder
                 .Property(album => album.Id)

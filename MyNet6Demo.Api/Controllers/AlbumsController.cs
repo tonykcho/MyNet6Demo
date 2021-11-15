@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyNet6Demo.Domain.Interfaces;
+using MyNet6Demo.Domain.Models;
 
 namespace MyNet6Demo.Api.Controllers
 {
@@ -32,9 +33,22 @@ namespace MyNet6Demo.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateAlbum()
+        public async Task<IActionResult> CreateAlbum(CancellationToken cancellationToken)
         {
-            return CreatedAtRoute("GetAlbumById", new { id = 1 }, null);
+            cancellationToken.ThrowIfCancellationRequested();
+
+            Album album = new Album
+            {
+                AlbumName = "Doujin",
+                Circle = "Creative",
+                ReleaseDate = DateTime.UtcNow
+            };
+
+            await _albumRepository.AddAsync(album, cancellationToken);
+
+            await _albumRepository.SaveChangesAsync(cancellationToken);
+
+            return CreatedAtRoute("GetAlbumById", new { id = album.Id }, album);
         }
     }
 }

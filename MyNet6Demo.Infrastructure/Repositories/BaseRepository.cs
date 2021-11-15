@@ -37,7 +37,16 @@ namespace MyNet6Demo.Infrastructure.Repositories
 
         public async Task<bool> SaveChangesAsync(CancellationToken cancellationToken)
         {
+            cancellationToken.ThrowIfCancellationRequested();
+
             return (await _context.SaveChangesAsync()) > 0;
+        }
+
+        public async Task AddAsync(T entity, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+
+            await _context.Set<T>().AddAsync(entity);
         }
     }
 }

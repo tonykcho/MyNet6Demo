@@ -4,12 +4,14 @@ namespace MyNet6Demo.Domain.Abstracts
     {
         public int Id { get; set; }
 
-        public DateTime CreatedAt { get; set; }
+        public Guid Guid { get; set; } = Guid.NewGuid();
 
-        public string CreatedBy { get; set; }
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
-        public DateTime LastUpdatedAt { get; set; }
+        public string CreatedBy { get; set; } = "System";
 
-        public string LastUpdateBy { get; set; }
+        public DateTime LastUpdatedAt { get; set; } = DateTime.UtcNow;
+
+        public string LastUpdateBy { get; set; } = "System";
     }
 }
