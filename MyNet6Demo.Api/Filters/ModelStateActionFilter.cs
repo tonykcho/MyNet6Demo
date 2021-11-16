@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Logging;
 
@@ -16,16 +17,12 @@ namespace MyNet6Demo.Api.Filters
         {
             if (context.ModelState.IsValid == false)
             {
-                IDictionary<string, ICollection<string>> message = new Dictionary<string, ICollection<string>>();
-
-                foreach (var item in context.ModelState)
+                ValidationProblemDetails details = new ValidationProblemDetails(context.ModelState)
                 {
-                    message.Add(item.Key, item.Value.Errors.Select(error => error.ErrorMessage).ToList());
-                }
+                    Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1"
+                };
 
-                context.HttpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
-
-                await context.HttpContext.Response.WriteAsJsonAsync(message);
+                context.Result = new BadRequestObjectResult(details);
 
                 return;
             }

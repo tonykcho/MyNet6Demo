@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Logging;
 using MyNet6Demo.Domain.Exceptions;
@@ -19,13 +20,14 @@ namespace MyNet6Demo.Api.Filters
 
             if (context.Exception is ResourceNotFoundException)
             {
-                IDictionary<string, string> message = new Dictionary<string, string>();
+                ProblemDetails details = new ProblemDetails()
+                {
+                    Type = "https://tools.ietf.org/html/rfc7231#section-6.5.4",
+                    Title = "The specified resource was not found.",
+                    Detail = context.Exception.Message
+                };
 
-                message.Add("Message", context.Exception.Message);
-
-                context.HttpContext.Response.StatusCode = StatusCodes.Status404NotFound;
-
-                await context.HttpContext.Response.WriteAsJsonAsync(message);
+                context.Result = new NotFoundObjectResult(details);
 
                 context.ExceptionHandled = true;
 
@@ -34,20 +36,21 @@ namespace MyNet6Demo.Api.Filters
 
             if (context.Exception is ResourceAlreadyExistException)
             {
-                IDictionary<string, string> message = new Dictionary<string, string>();
+                ProblemDetails details = new ProblemDetails()
+                {
+                    Type = "https://tools.ietf.org/html/rfc7231#section-6.5.4",
+                    Title = "The specified resource was already exist",
+                    Detail = context.Exception.Message
+                };
 
-                message.Add("Message", context.Exception.Message);
-
-                context.HttpContext.Response.StatusCode = StatusCodes.Status409Conflict;
-
-                await context.HttpContext.Response.WriteAsJsonAsync(message);
+                context.Result = new BadRequestObjectResult(details);
 
                 context.ExceptionHandled = true;
 
                 return;
             }
 
-            if(context.Exception is CustomException)
+            if (context.Exception is CustomException)
             {
                 IDictionary<string, string> message = new Dictionary<string, string>();
 

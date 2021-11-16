@@ -24,16 +24,19 @@ namespace MyNet6Demo.Api.Controllers
         {
             // throw new ArgumentException();
 
+
             cancellationToken.ThrowIfCancellationRequested();
 
             // throw new ArgumentNullException(nameof(id));
 
             var album = await _albumRepository.GetByIdAsync(id, cancellationToken);
 
-            if (album is null)
-            {
-                return NotFound();
-            }
+            throw new ResourceNotFoundException(nameof(album));
+
+            // if (album is null)
+            // {
+            //     return NotFound();
+            // }
 
             return Ok(album);
         }

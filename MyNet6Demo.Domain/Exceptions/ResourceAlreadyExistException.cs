@@ -2,7 +2,7 @@ namespace MyNet6Demo.Domain.Exceptions
 {
     public class ResourceAlreadyExistException : Exception
     {
-        public ResourceAlreadyExistException(string message) : base(message)
+        public ResourceAlreadyExistException(string name) : base($"Entity ({name}) was already exist.")
         {
 
         }
