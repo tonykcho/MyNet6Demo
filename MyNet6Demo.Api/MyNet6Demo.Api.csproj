@@ -22,6 +22,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MyNet6Demo.Infrastructure\MyNet6Demo.Infrastructure.csproj" />
+    <ProjectReference Include="..\MyNet6Demo.Core\MyNet6Demo.Core.csproj" />
   </ItemGroup>
 
 </Project>

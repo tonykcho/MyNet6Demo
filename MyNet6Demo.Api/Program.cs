@@ -5,6 +5,10 @@ using MyNet6Demo.Api.Filters;
 using MyNet6Demo.Api.Extensions;
 using MyNet6Demo.Domain.Interfaces;
 using MyNet6Demo.Infrastructure.Repositories;
+using MyNet6Demo.Core.BackgroundServices;
+using FluentValidation.AspNetCore;
+using System.Reflection;
+using MediatR;
 
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
@@ -19,7 +23,9 @@ builder.Services.AddControllers(options =>
 {
     options.Filters.Add<ModelStateActionFilter>();
     options.Filters.Add<HttpGlobalExceptionFilter>();
-});
+}).AddFluentValidation(configuration => configuration.RegisterValidatorsFromAssembly(Assembly.Load("MyNet6Demo.Core")));
+
+builder.Services.AddMediatR(Assembly.Load("MyNet6Demo.Core"));
 
 builder.Services.AddAuthentication(options =>
 {
@@ -43,6 +49,8 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddDbContext<AppDbContext>();
 
 builder.Services.AddScoped<IAlbumRepository, AlbumRepository>();
+
+builder.Services.AddHostedService<SomeBackgroundService>();
 
 var app = builder.Build();
 

@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.Net.Mime;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyNet6Demo.Domain.Exceptions;
@@ -38,9 +39,15 @@ namespace MyNet6Demo.Api.Controllers
         }
 
         [HttpPost]
+        [Consumes(MediaTypeNames.Application.Json)]
         public async Task<IActionResult> CreateAlbumAsync(CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
+
+            await _albumRepository.UnitOfWork.ExecuteAsync(async () =>
+            {
+                await _albumRepository.SaveChangesAsync(cancellationToken);
+            }, cancellationToken);
 
             Album album = new Album
             {

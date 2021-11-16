@@ -31,13 +31,15 @@ namespace MyNet6Demo.Infrastructure.DbContexts
             base.OnModelCreating(builder);
         }
 
-        public async Task ExecuteAsync(Func<Task> action)
+        public async Task ExecuteAsync(Func<Task> action, CancellationToken cancellationToken)
         {
-            using (var transaction = await Database.BeginTransactionAsync())
+            cancellationToken.ThrowIfCancellationRequested();
+
+            using (var transaction = await Database.BeginTransactionAsync(cancellationToken))
             {
                 await action();
 
-                await transaction.CommitAsync();
+                await transaction.CommitAsync(cancellationToken);
             }
 
             // using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
@@ -48,13 +50,15 @@ namespace MyNet6Demo.Infrastructure.DbContexts
             // }
         }
 
-        public async Task<TResult> ExecuteAsync<TResult>(Func<Task<TResult>> action)
+        public async Task<TResult> ExecuteAsync<TResult>(Func<Task<TResult>> action, CancellationToken cancellationToken)
         {
-            using (var transaction = await Database.BeginTransactionAsync())
+            cancellationToken.ThrowIfCancellationRequested();
+
+            using (var transaction = await Database.BeginTransactionAsync(cancellationToken))
             {
                 TResult result = await action();
 
-                await transaction.CommitAsync();
+                await transaction.CommitAsync(cancellationToken);
 
                 return result;
             }

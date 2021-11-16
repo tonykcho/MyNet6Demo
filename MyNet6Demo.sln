@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyNet6Demo.Domain", "MyNet6
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyNet6Demo.Infrastructure", "MyNet6Demo.Infrastructure\MyNet6Demo.Infrastructure.csproj", "{114F6651-FD5E-4CB7-88A1-68814F890601}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyNet6Demo.Core", "MyNet6Demo.Core\MyNet6Demo.Core.csproj", "{7104B34C-8BCD-41DC-8EA4-26400F080975}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -50,5 +52,9 @@ Global
 		{114F6651-FD5E-4CB7-88A1-68814F890601}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{114F6651-FD5E-4CB7-88A1-68814F890601}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{114F6651-FD5E-4CB7-88A1-68814F890601}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7104B34C-8BCD-41DC-8EA4-26400F080975}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7104B34C-8BCD-41DC-8EA4-26400F080975}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7104B34C-8BCD-41DC-8EA4-26400F080975}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7104B34C-8BCD-41DC-8EA4-26400F080975}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
