@@ -22,21 +22,14 @@ namespace MyNet6Demo.Api.Controllers
         [HttpGet("{id}", Name = "GetAlbumById")]
         public async Task<IActionResult> GetAlbumByIdAsync(int id, CancellationToken cancellationToken)
         {
-            // throw new ArgumentException();
-
-
             cancellationToken.ThrowIfCancellationRequested();
-
-            // throw new ArgumentNullException(nameof(id));
 
             var album = await _albumRepository.GetByIdAsync(id, cancellationToken);
 
-            throw new ResourceNotFoundException(nameof(album));
-
-            // if (album is null)
-            // {
-            //     return NotFound();
-            // }
+            if (album is null)
+            {
+                throw new ResourceNotFoundException(nameof(album));
+            }
 
             return Ok(album);
         }

@@ -1,5 +1,4 @@
 using Serilog;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using MyNet6Demo.Infrastructure.DbContexts;
 using MyNet6Demo.Api.Filters;
 using MyNet6Demo.Api.Extensions;
@@ -9,6 +8,9 @@ using MyNet6Demo.Core.BackgroundServices;
 using FluentValidation.AspNetCore;
 using System.Reflection;
 using MediatR;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
+using MyNet6Demo.Api.HealthChecks;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
@@ -52,6 +54,9 @@ builder.Services.AddScoped<IAlbumRepository, AlbumRepository>();
 
 builder.Services.AddHostedService<SomeBackgroundService>();
 
+builder.Services.AddHealthChecks()
+    .Add(new HealthCheckRegistration("Mysql", sp => new MySqlHealthCheck(sp.GetRequiredService<AppDbContext>()), default, default));
+
 var app = builder.Build();
 
 await app.MigrateSchemaAsync();
@@ -63,6 +68,25 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapGet("/", () => "Hello World!");
+
+app.MapHealthChecks("api/health_checks", new HealthCheckOptions()
+{
+    ResponseWriter = async (context, report) =>
+    {
+        context.Response.ContentType = "application/json";
+
+        await context.Response.WriteAsJsonAsync(new
+        {
+            Status = report.Status.ToString(),
+            Checks = report.Entries.Select(x => new
+            {
+                Component = x.Key,
+                Status = x.Value.Status.ToString(),
+                Description = x.Value.Description
+            })
+        });
+    }
+});
 
 app.MapControllers();
 
