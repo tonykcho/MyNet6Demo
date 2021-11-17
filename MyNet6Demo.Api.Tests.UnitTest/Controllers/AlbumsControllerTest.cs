@@ -1,10 +1,12 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+using MediatR;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using MyNet6Demo.Api.Controllers;
+using MyNet6Demo.Core.Albums.Queries;
+using MyNet6Demo.Core.ViewModels;
 using MyNet6Demo.Domain.Exceptions;
 using MyNet6Demo.Domain.Interfaces;
 using MyNet6Demo.Domain.Models;
@@ -45,15 +47,21 @@ namespace MyNet6Demo.Api.Tests.UnitTest
         {
             CancellationTokenSource source = new CancellationTokenSource();
 
-            var mockAlbumRepository = new Mock<IAlbumRepository>();
+            var query = new GetAlbumByGuidQuery()
+            {
+                Guid = Guid.NewGuid()
+            };
 
-            mockAlbumRepository.Setup(repository => repository.GetByIdAsync(It.IsAny<int>(), source.Token))
-                .Returns(Task.FromResult<Album?>(null));
+            var mockMediator = new Mock<IMediator>();
 
-            var controller = new AlbumsController(mockAlbumRepository.Object);
+            mockMediator.Setup(m => m.Send(It.IsAny<GetAlbumByGuidQuery>(), source.Token))
+                .Throws(new ResourceNotFoundException("album"));
 
-            await Assert.ThrowsExceptionAsync<ResourceNotFoundException>(async () => {
-                await controller.GetAlbumByIdAsync(1, source.Token);
+            var controller = new AlbumsController(mockMediator.Object);
+
+            await Assert.ThrowsExceptionAsync<ResourceNotFoundException>(async () =>
+            {
+                await controller.GetAlbumByGuidAsync(query, source.Token);
             });
 
             // var actionResult = await controller.GetAlbumByIdAsync(1, source.Token);

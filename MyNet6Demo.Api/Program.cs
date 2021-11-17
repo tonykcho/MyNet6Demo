@@ -29,6 +29,8 @@ builder.Services.AddControllers(options =>
 
 builder.Services.AddMediatR(Assembly.Load("MyNet6Demo.Core"));
 
+builder.Services.AddAutoMapper(Assembly.Load("MyNet6Demo.Core"));
+
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultScheme = "MyNet6CoreDemo";

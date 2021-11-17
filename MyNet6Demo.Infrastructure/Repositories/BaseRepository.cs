@@ -7,7 +7,7 @@ namespace MyNet6Demo.Infrastructure.Repositories
 {
     public abstract class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity, IAggregateRoot
     {
-        private readonly AppDbContext _context;
+        protected readonly AppDbContext _context;
 
         public BaseRepository(AppDbContext context)
         {
@@ -21,6 +21,13 @@ namespace MyNet6Demo.Infrastructure.Repositories
             cancellationToken.ThrowIfCancellationRequested();
 
             return await _context.Set<T>().SingleOrDefaultAsync(x => x.Id == id, cancellationToken);
+        }
+
+        public virtual async Task<T> GetByGuidAsync(Guid guid, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+
+            return await _context.Set<T>().SingleOrDefaultAsync(x => x.Guid == guid);
         }
 
         public virtual async Task<IEnumerable<T>> GetListAsync(CancellationToken cancellationToken)

@@ -1,7 +1,10 @@
 using System.ComponentModel.DataAnnotations;
 using System.Net.Mime;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MyNet6Demo.Core.Albums.Commands;
+using MyNet6Demo.Core.Albums.Queries;
 using MyNet6Demo.Domain.Exceptions;
 using MyNet6Demo.Domain.Interfaces;
 using MyNet6Demo.Domain.Models;
@@ -11,52 +14,33 @@ namespace MyNet6Demo.Api.Controllers
     [Route("api/[controller]")]
     public class AlbumsController : ControllerBase
     {
-        private readonly IAlbumRepository _albumRepository;
+        private readonly IMediator _mediator;
 
-        public AlbumsController(IAlbumRepository albumRepository)
+        public AlbumsController(IMediator mediator)
         {
-            _albumRepository = albumRepository;
+            _mediator = mediator;
         }
 
         // [Authorize]
-        [HttpGet("{id}", Name = "GetAlbumById")]
-        public async Task<IActionResult> GetAlbumByIdAsync(int id, CancellationToken cancellationToken)
+        [HttpGet("{guid}", Name = "GetAlbumByGuidAsync")]
+        public async Task<IActionResult> GetAlbumByGuidAsync([FromRoute] GetAlbumByGuidQuery query, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            var album = await _albumRepository.GetByIdAsync(id, cancellationToken);
-
-            if (album is null)
-            {
-                throw new ResourceNotFoundException(nameof(album));
-            }
+            var album = await _mediator.Send(query, cancellationToken);
 
             return Ok(album);
         }
 
         [HttpPost]
         [Consumes(MediaTypeNames.Application.Json)]
-        public async Task<IActionResult> CreateAlbumAsync(CancellationToken cancellationToken)
+        public async Task<IActionResult> CreateAlbumAsync([FromBody] CreateAlbumCommand command, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            await _albumRepository.UnitOfWork.ExecuteAsync(async () =>
-            {
-                await _albumRepository.SaveChangesAsync(cancellationToken);
-            }, cancellationToken);
+            var album = await _mediator.Send(command, cancellationToken);
 
-            Album album = new Album
-            {
-                AlbumName = "Doujin",
-                Circle = "Creative",
-                ReleaseDate = DateTime.UtcNow
-            };
-
-            await _albumRepository.AddAsync(album, cancellationToken);
-
-            await _albumRepository.SaveChangesAsync(cancellationToken);
-
-            return CreatedAtRoute("GetAlbumById", new { id = album.Id }, album);
+            return CreatedAtRoute("GetAlbumByGuidAsync", new { guid = album.Guid }, album);
         }
     }
 }

@@ -10,5 +10,12 @@ namespace MyNet6Demo.Domain.Models
         public string Circle { get; set; }
 
         public DateTime ReleaseDate { get; set; }
+
+        public ICollection<Song> Songs { get; set; }
+
+        public void AddSong(Song song)
+        {
+            Songs.Add(song);
+        }
     }
 }

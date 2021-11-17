@@ -19,6 +19,8 @@ namespace MyNet6Demo.Api.Extensions
 
                     await context.Database.MigrateAsync();
 
+                    await AppDbContextSeed.SeedSampleDataAsync(context);
+
                     logger.LogInformation("Migrate AppDbContext Success");
                 }
                 catch(Exception ex)

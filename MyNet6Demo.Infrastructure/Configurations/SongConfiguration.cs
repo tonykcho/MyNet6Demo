@@ -16,6 +16,10 @@ namespace MyNet6Demo.Infrastructure.Configurations
                 .ValueGeneratedOnAdd();
 
             builder.HasIndex(song => song.Id);
+
+            builder.HasOne(song => song.Album)
+                .WithMany(album => album.Songs)
+                .HasForeignKey(song => song.AlbumId);
         }
     }
 }

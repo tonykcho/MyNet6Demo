@@ -8,6 +8,8 @@ namespace MyNet6Demo.Domain.Interfaces
 
         Task<T> GetByIdAsync(int id, CancellationToken cancellationToken);
 
+        Task<T> GetByGuidAsync(Guid guid, CancellationToken cancellationToken);
+
         Task<IEnumerable<T>> GetListAsync(CancellationToken cancellationToken);
 
         Task<bool> SaveChangesAsync(CancellationToken cancellationToken);
