@@ -52,3 +52,24 @@ jobs:
   #   - name: Build and push
   #     uses: docker/build-push-action@v2
   #     with:
+
+  # ssh:
+  #   name: Deploy
+  #   needs: build-and-push-image
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - name: ssh testing
+  #     uses: appleboy/ssh-action@master
+  #     with:
+  #       host: ${{ secrets.HKU_HOST }}
+  #       username: ubuntu
+  #       key: ${{ secrets.HKU_KEY }}
+  #       port: 22
+  #       script: | 
+  #         docker-compose down
+  #         echo --------------------------------------------------
+  #         docker-compose pull
+  #         echo --------------------------------------------------
+  #         docker-compose up -d
+  #         echo --------------------------------------------------
+  #         docker image prune -f

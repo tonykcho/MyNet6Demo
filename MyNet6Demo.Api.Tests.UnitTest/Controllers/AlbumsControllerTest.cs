@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using MyNet6Demo.Api.Controllers;
+using MyNet6Demo.Domain.Exceptions;
 using MyNet6Demo.Domain.Interfaces;
 using MyNet6Demo.Domain.Models;
 
@@ -51,13 +52,17 @@ namespace MyNet6Demo.Api.Tests.UnitTest
 
             var controller = new AlbumsController(mockAlbumRepository.Object);
 
-            var actionResult = await controller.GetAlbumByIdAsync(1, source.Token);
+            await Assert.ThrowsExceptionAsync<ResourceNotFoundException>(async () => {
+                await controller.GetAlbumByIdAsync(1, source.Token);
+            });
 
-            Assert.IsInstanceOfType(actionResult, typeof(NotFoundResult));
+            // var actionResult = await controller.GetAlbumByIdAsync(1, source.Token);
 
-            var contentResult = actionResult as NotFoundResult;
+            // Assert.IsInstanceOfType(actionResult, typeof(NotFoundResult));
 
-            Assert.AreEqual(404, contentResult?.StatusCode);
+            // var contentResult = actionResult as NotFoundResult;
+
+            // Assert.AreEqual(404, contentResult?.StatusCode);
         }
     }
 }
