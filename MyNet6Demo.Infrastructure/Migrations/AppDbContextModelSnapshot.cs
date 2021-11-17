@@ -57,7 +57,7 @@ namespace MyNet6Demo.Infrastructure.Migrations
 
                     b.HasIndex("Id");
 
-                    b.ToTable("Albums");
+                    b.ToTable("Albums", (string)null);
                 });
 
             modelBuilder.Entity("MyNet6Demo.Domain.Models.Artist", b =>
@@ -91,7 +91,7 @@ namespace MyNet6Demo.Infrastructure.Migrations
 
                     b.HasIndex("Id");
 
-                    b.ToTable("Artist");
+                    b.ToTable("Artist", (string)null);
                 });
 
             modelBuilder.Entity("MyNet6Demo.Domain.Models.Song", b =>
@@ -133,7 +133,7 @@ namespace MyNet6Demo.Infrastructure.Migrations
 
                     b.HasIndex("Id");
 
-                    b.ToTable("Song");
+                    b.ToTable("Song", (string)null);
                 });
 
             modelBuilder.Entity("MyNet6Demo.Domain.Models.SongArtist", b =>
@@ -154,7 +154,7 @@ namespace MyNet6Demo.Infrastructure.Migrations
 
                     b.HasIndex("SongId");
 
-                    b.ToTable("SongArtist");
+                    b.ToTable("SongArtist", (string)null);
                 });
 
             modelBuilder.Entity("MyNet6Demo.Domain.Models.Song", b =>
