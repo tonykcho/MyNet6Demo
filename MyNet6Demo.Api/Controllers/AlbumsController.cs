@@ -1,13 +1,9 @@
-using System.ComponentModel.DataAnnotations;
 using System.Net.Mime;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyNet6Demo.Core.Albums.Commands;
 using MyNet6Demo.Core.Albums.Queries;
-using MyNet6Demo.Domain.Exceptions;
-using MyNet6Demo.Domain.Interfaces;
-using MyNet6Demo.Domain.Models;
 
 namespace MyNet6Demo.Api.Controllers
 {
@@ -41,6 +37,17 @@ namespace MyNet6Demo.Api.Controllers
             var album = await _mediator.Send(command, cancellationToken);
 
             return CreatedAtRoute("GetAlbumByGuidAsync", new { guid = album.Guid }, album);
+        }
+
+        [HttpPut]
+        [Consumes(MediaTypeNames.Application.Json)]
+        public async Task<IActionResult> UpdateAlbumAsync([FromBody] UpdateAlbumCommand command, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+
+            await _mediator.Send(command);
+
+            return Ok();
         }
     }
 }

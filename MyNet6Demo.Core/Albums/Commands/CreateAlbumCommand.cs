@@ -22,13 +22,13 @@ namespace MyNet6Demo.Core.Albums.Commands
         public CreateAlbumCommandValidator()
         {
             RuleFor(x => x.AlbumName)
-                .NotEmpty();
+                .NotEmpty().WithMessage("Missing album name");
 
             RuleFor(x => x.Circle)
-                .NotEmpty();
+                .NotEmpty().WithMessage("Missing circle");
 
             RuleFor(x => x.ReleaseDate)
-                .NotEmpty();
+                .NotEmpty().WithMessage("Missing release date");
         }
     }
 

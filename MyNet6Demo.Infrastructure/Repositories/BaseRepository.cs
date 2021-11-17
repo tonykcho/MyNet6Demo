@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using MyNet6Demo.Domain.Abstracts;
 using MyNet6Demo.Domain.Interfaces;
@@ -54,6 +55,11 @@ namespace MyNet6Demo.Infrastructure.Repositories
             cancellationToken.ThrowIfCancellationRequested();
 
             await _context.Set<T>().AddAsync(entity);
+        }
+
+        public void Update(T entity)
+        {
+            _context.Set<T>().Update(entity);
         }
     }
 }

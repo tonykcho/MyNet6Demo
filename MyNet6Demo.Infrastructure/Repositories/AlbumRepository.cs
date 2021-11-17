@@ -17,5 +17,12 @@ namespace MyNet6Demo.Infrastructure.Repositories
 
             return await _context.Albums.SingleOrDefaultAsync(album => album.AlbumName == albumName, cancellationToken);
         }
+
+        public async Task LoadSongsAsync(Album album, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+
+            await _context.Entry(album).Collection(album => album.Songs).LoadAsync();
+        }
     }
 }

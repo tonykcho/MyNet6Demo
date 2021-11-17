@@ -17,5 +17,7 @@ namespace MyNet6Demo.Domain.Interfaces
         IQueryable<T> GetQuery();
 
         Task AddAsync(T entity, CancellationToken cancellationToken);
+
+        void Update(T entity);
     }
 }
