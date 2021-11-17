@@ -16,7 +16,7 @@ namespace MyNet6Demo.Infrastructure.Repositories
 
         public IUnitOfWork UnitOfWork => _context;
 
-        public virtual async Task<T?> GetByIdAsync(int id, CancellationToken cancellationToken)
+        public virtual async Task<T> GetByIdAsync(int id, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
 

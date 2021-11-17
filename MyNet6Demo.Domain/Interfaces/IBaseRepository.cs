@@ -6,7 +6,7 @@ namespace MyNet6Demo.Domain.Interfaces
     {
         IUnitOfWork UnitOfWork { get; }
 
-        Task<T?> GetByIdAsync(int id, CancellationToken cancellationToken);
+        Task<T> GetByIdAsync(int id, CancellationToken cancellationToken);
 
         Task<IEnumerable<T>> GetListAsync(CancellationToken cancellationToken);
 
