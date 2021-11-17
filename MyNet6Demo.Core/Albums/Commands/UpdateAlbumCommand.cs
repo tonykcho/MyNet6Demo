@@ -62,7 +62,7 @@ namespace MyNet6Demo.Core.Albums.Commands
             // Check whether album name is already been used by other album;
             Album a = await _albumRepository.GetByAlbumNameAsync(request.AlbumName, cancellationToken);
 
-            if (a is not null && a.Guid == album.Guid)
+            if (a is not null && a.Guid != album.Guid)
             {
                 throw new ResourceAlreadyExistException(nameof(album));
             }
