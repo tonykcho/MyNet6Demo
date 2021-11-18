@@ -17,13 +17,21 @@ namespace MyNet6Demo.Api.Controllers
             _mediator = mediator;
         }
 
-        // [Authorize]
-        [HttpGet("{guid}", Name = "GetAlbumByGuidAsync")]
-        public async Task<IActionResult> GetAlbumByGuidAsync([FromRoute] GetAlbumByGuidQuery query, CancellationToken cancellationToken)
+        [HttpGet(Name = "GetAlbumListAsync")]
+        public async Task<IActionResult> GetAlbumListAsync([FromQuery] GetAlbumListQuery query, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            var album = await _mediator.Send(query, cancellationToken);
+            return Ok(await _mediator.Send(query, cancellationToken));
+        }
+
+        // [Authorize]
+        [HttpGet("{guid}", Name = "GetAlbumByGuidAsync")]
+        public async Task<IActionResult> GetAlbumByGuidAsync(Guid guid, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+
+            var album = await _mediator.Send(new GetAlbumByGuidQuery { Guid = guid }, cancellationToken);
 
             return Ok(album);
         }
@@ -47,7 +55,7 @@ namespace MyNet6Demo.Api.Controllers
 
             await _mediator.Send(command);
 
-            return Ok();
+            return NoContent();
         }
     }
 }

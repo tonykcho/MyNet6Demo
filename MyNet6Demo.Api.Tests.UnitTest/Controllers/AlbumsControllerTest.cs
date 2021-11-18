@@ -47,21 +47,16 @@ namespace MyNet6Demo.Api.Tests.UnitTest
         {
             CancellationTokenSource source = new CancellationTokenSource();
 
-            var query = new GetAlbumByGuidQuery()
-            {
-                Guid = Guid.NewGuid()
-            };
-
             var mockMediator = new Mock<IMediator>();
 
-            mockMediator.Setup(m => m.Send(It.IsAny<GetAlbumByGuidQuery>(), source.Token))
+            mockMediator.Setup(m => m.Send(It.IsAny<Guid>(), source.Token))
                 .Throws(new ResourceNotFoundException("album"));
 
             var controller = new AlbumsController(mockMediator.Object);
 
             await Assert.ThrowsExceptionAsync<ResourceNotFoundException>(async () =>
             {
-                await controller.GetAlbumByGuidAsync(query, source.Token);
+                await controller.GetAlbumByGuidAsync(Guid.NewGuid(), source.Token);
             });
 
             // var actionResult = await controller.GetAlbumByIdAsync(1, source.Token);

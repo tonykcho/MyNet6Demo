@@ -1,5 +1,6 @@
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using MyNet6Demo.Domain.Abstracts;
 using MyNet6Demo.Domain.Interfaces;
 using MyNet6Demo.Infrastructure.DbContexts;
@@ -60,6 +61,11 @@ namespace MyNet6Demo.Infrastructure.Repositories
         public void Update(T entity)
         {
             _context.Set<T>().Update(entity);
+        }
+
+        public EntityEntry<T> Entry(T entity)
+        {
+            return _context.Entry(entity);
         }
     }
 }

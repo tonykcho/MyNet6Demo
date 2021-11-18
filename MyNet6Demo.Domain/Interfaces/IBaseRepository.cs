@@ -1,4 +1,5 @@
 using MyNet6Demo.Domain.Abstracts;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace MyNet6Demo.Domain.Interfaces
 {
@@ -19,5 +20,7 @@ namespace MyNet6Demo.Domain.Interfaces
         Task AddAsync(T entity, CancellationToken cancellationToken);
 
         void Update(T entity);
+
+        EntityEntry<T> Entry(T entity);
     }
 }

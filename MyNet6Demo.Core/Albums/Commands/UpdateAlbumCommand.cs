@@ -1,5 +1,6 @@
 using FluentValidation;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using MyNet6Demo.Domain.Exceptions;
 using MyNet6Demo.Domain.Interfaces;
 using MyNet6Demo.Domain.Models;
@@ -60,16 +61,13 @@ namespace MyNet6Demo.Core.Albums.Commands
             }
 
             // Check whether album name is already been used by other album;
-            Album a = await _albumRepository.GetByAlbumNameAsync(request.AlbumName, cancellationToken);
-
-            if (a is not null && a.Guid != album.Guid)
+            if (await _albumRepository.GetQuery().AnyAsync(album => album.AlbumName == request.AlbumName && album.Guid != album.Guid) == true)
             {
                 throw new ResourceAlreadyExistException(nameof(album));
             }
 
             await _albumRepository.UnitOfWork.ExecuteAsync(async () =>
             {
-
                 album.AlbumName = request.AlbumName;
 
                 album.Circle = request.Circle;
