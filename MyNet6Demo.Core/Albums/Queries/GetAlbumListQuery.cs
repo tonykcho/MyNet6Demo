@@ -2,7 +2,8 @@ using AutoMapper;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using MyNet6Demo.Core.ViewModels;
+using MyNet6Demo.Core.Albums.ViewModels;
+using MyNet6Demo.Core.Common;
 using MyNet6Demo.Domain.Interfaces;
 
 namespace MyNet6Demo.Core.Albums.Queries

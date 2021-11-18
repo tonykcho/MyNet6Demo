@@ -25,6 +25,16 @@ namespace MyNet6Demo.Api.Controllers
             return Ok(await _mediator.Send(query, cancellationToken));
         }
 
+        [HttpGet("export", Name = "ExportAlbumListAsync")]
+        public async Task<IActionResult> ExportAlbumListAsync(CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+
+            var csv = await _mediator.Send(new ExportAlbumListQuery());
+
+            return File(csv.Content, csv.ContentType, csv.FileName);
+        }
+
         // [Authorize]
         [HttpGet("{guid}", Name = "GetAlbumByGuidAsync")]
         public async Task<IActionResult> GetAlbumByGuidAsync(Guid guid, CancellationToken cancellationToken)

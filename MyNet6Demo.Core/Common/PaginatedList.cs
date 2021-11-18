@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 
-namespace MyNet6Demo.Core.ViewModels
+namespace MyNet6Demo.Core.Common
 {
     public class PaginatedList<T>
     {

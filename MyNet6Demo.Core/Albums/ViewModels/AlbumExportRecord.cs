@@ -1,6 +1,6 @@
-namespace MyNet6Demo.Core.ViewModels
+namespace MyNet6Demo.Core.Albums.ViewModels
 {
-    public class AlbumViewModel
+    public class AlbumExportRecord
     {
         public Guid Guid { get; set; }
 

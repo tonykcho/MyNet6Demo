@@ -6,7 +6,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using MyNet6Demo.Api.Controllers;
 using MyNet6Demo.Core.Albums.Queries;
-using MyNet6Demo.Core.ViewModels;
 using MyNet6Demo.Domain.Exceptions;
 using MyNet6Demo.Domain.Interfaces;
 using MyNet6Demo.Domain.Models;
@@ -49,7 +48,7 @@ namespace MyNet6Demo.Api.Tests.UnitTest
 
             var mockMediator = new Mock<IMediator>();
 
-            mockMediator.Setup(m => m.Send(It.IsAny<Guid>(), source.Token))
+            mockMediator.Setup(m => m.Send(It.IsAny<GetAlbumByGuidQuery>(), source.Token))
                 .Throws(new ResourceNotFoundException("album"));
 
             var controller = new AlbumsController(mockMediator.Object);

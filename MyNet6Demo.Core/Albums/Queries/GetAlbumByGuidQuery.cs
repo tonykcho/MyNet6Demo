@@ -1,7 +1,7 @@
 using AutoMapper;
 using FluentValidation;
 using MediatR;
-using MyNet6Demo.Core.ViewModels;
+using MyNet6Demo.Core.Albums.ViewModels;
 using MyNet6Demo.Domain.Exceptions;
 using MyNet6Demo.Domain.Interfaces;
 using MyNet6Demo.Domain.Models;

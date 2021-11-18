@@ -11,6 +11,7 @@ using MediatR;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using MyNet6Demo.Api.HealthChecks;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using MyNet6Demo.Core.Services;
 
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
@@ -53,6 +54,8 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddDbContext<AppDbContext>();
 
 builder.Services.AddScoped<IAlbumRepository, AlbumRepository>();
+
+builder.Services.AddScoped<ICsvFileBuilder, CsvFileBuilder>();
 
 builder.Services.AddHostedService<SomeBackgroundService>();
 
