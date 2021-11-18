@@ -4,7 +4,7 @@ namespace MyNet6Demo.Core.Common
 {
     public class PaginatedList<T>
     {
-        public IEnumerable<T> Items { get; set; }
+        public IList<T> Items { get; set; }
 
         public int PageNumber { get; }
 
@@ -12,7 +12,7 @@ namespace MyNet6Demo.Core.Common
 
         public int TotalCount { get; }
 
-        public PaginatedList(IEnumerable<T> items, int count, int pageNumber, int pageSize)
+        public PaginatedList(IList<T> items, int count, int pageNumber, int pageSize)
         {
             PageNumber = pageNumber;
             TotalPages = (int)Math.Ceiling(count / (double)pageSize);

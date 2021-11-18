@@ -10,7 +10,7 @@ using MyNet6Demo.Domain.Exceptions;
 using MyNet6Demo.Domain.Interfaces;
 using MyNet6Demo.Domain.Models;
 
-namespace MyNet6Demo.Api.Tests.UnitTest
+namespace MyNet6Demo.Api.Tests.UnitTest.Controllers
 {
     [TestClass]
     public class AlbumsControllerTest

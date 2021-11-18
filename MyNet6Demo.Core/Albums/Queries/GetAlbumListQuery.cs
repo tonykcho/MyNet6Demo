@@ -48,7 +48,7 @@ namespace MyNet6Demo.Core.Albums.Queries
 
             var items = await query.Skip((request.PageNumber - 1) * request.PageSize).Take(request.PageSize).ToListAsync();
 
-            var views = _mapper.Map<IEnumerable<AlbumViewModel>>(items);
+            var views = _mapper.Map<IList<AlbumViewModel>>(items);
 
             return new PaginatedList<AlbumViewModel>(views, count, request.PageNumber, request.PageSize);
         }
