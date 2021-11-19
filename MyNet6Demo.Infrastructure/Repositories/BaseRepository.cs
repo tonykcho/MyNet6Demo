@@ -63,6 +63,11 @@ namespace MyNet6Demo.Infrastructure.Repositories
             _context.Set<T>().Update(entity);
         }
 
+        public void Remove(T entity)
+        {
+            _context.Set<T>().Remove(entity);
+        }
+
         public EntityEntry<T> Entry(T entity)
         {
             return _context.Entry(entity);

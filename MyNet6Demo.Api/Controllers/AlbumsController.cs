@@ -67,5 +67,15 @@ namespace MyNet6Demo.Api.Controllers
 
             return NoContent();
         }
+
+        [HttpDelete("{guid}", Name = "DeleteAlbumAsync")]
+        public async Task<IActionResult> DeleteAlbumAsync(Guid guid, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+
+            await _mediator.Send(new DeleteAlbumCommand { Guid = guid });
+
+            return NoContent();
+        }
     }
 }

@@ -21,6 +21,8 @@ namespace MyNet6Demo.Domain.Interfaces
 
         void Update(T entity);
 
+        void Remove(T entity);
+
         EntityEntry<T> Entry(T entity);
     }
 }
