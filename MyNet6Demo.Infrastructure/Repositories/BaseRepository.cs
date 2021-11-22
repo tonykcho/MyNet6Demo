@@ -29,14 +29,14 @@ namespace MyNet6Demo.Infrastructure.Repositories
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            return await _context.Set<T>().SingleOrDefaultAsync(x => x.Guid == guid);
+            return await _context.Set<T>().SingleOrDefaultAsync(x => x.Guid == guid, cancellationToken);
         }
 
         public virtual async Task<IEnumerable<T>> GetListAsync(CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            return await _context.Set<T>().ToListAsync();
+            return await _context.Set<T>().ToListAsync(cancellationToken);
         }
 
         public IQueryable<T> GetQuery()
@@ -48,14 +48,27 @@ namespace MyNet6Demo.Infrastructure.Repositories
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            return (await _context.SaveChangesAsync()) > 0;
+            foreach (var entry in _context.ChangeTracker.Entries<BaseEntity>())
+            {
+                switch (entry.State)
+                {
+                    case EntityState.Added:
+                        entry.Entity.CreatedAt = DateTime.UtcNow;
+                        break;
+                    case EntityState.Modified:
+                        entry.Entity.LastUpdatedAt = DateTime.UtcNow;
+                        break;
+                }
+            }
+
+            return (await _context.SaveChangesAsync(cancellationToken)) > 0;
         }
 
         public async Task AddAsync(T entity, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            await _context.Set<T>().AddAsync(entity);
+            await _context.Set<T>().AddAsync(entity, cancellationToken);
         }
 
         public void Update(T entity)

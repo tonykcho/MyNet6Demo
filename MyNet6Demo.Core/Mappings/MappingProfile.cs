@@ -1,5 +1,6 @@
 using AutoMapper;
 using MyNet6Demo.Core.Albums.ViewModels;
+using MyNet6Demo.Core.Songs.ViewModels;
 using MyNet6Demo.Domain.Models;
 
 namespace MyNet6Demo.Core.Mappings
@@ -8,9 +9,12 @@ namespace MyNet6Demo.Core.Mappings
     {
         public MappingProfile()
         {
-            CreateMap<Album, AlbumViewModel>();
+            CreateMap<Album, AlbumViewModel>()
+                .ForMember(album => album.Songs, o => o.MapFrom(src => src.Songs.ToList()));
 
             CreateMap<Album, AlbumExportRecord>();
+
+            CreateMap<Song, SongViewModel>();
         }
     }
 }

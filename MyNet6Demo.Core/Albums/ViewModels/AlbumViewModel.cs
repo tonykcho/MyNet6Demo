@@ -1,3 +1,5 @@
+using MyNet6Demo.Core.Songs.ViewModels;
+
 namespace MyNet6Demo.Core.Albums.ViewModels
 {
     public class AlbumViewModel
@@ -9,5 +11,7 @@ namespace MyNet6Demo.Core.Albums.ViewModels
         public string Circle { get; set; }
 
         public DateTime ReleaseDate { get; set; }
+
+        public IEnumerable<SongViewModel> Songs { get; set; }
     }
 }
