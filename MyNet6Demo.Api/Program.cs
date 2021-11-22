@@ -54,6 +54,7 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddDbContext<AppDbContext>();
 
 builder.Services.AddScoped<IAlbumRepository, AlbumRepository>();
+builder.Services.AddScoped<ISongRepository, SongRepository>();
 
 builder.Services.AddScoped<ICsvFileBuilder, CsvFileBuilder>();
 

@@ -11,7 +11,7 @@ namespace MyNet6Demo.Domain.Models
 
         public DateTime ReleaseDate { get; set; }
 
-        public ICollection<Song> Songs { get; set; }
+        public ICollection<Song> Songs { get; set; } = new List<Song>();
 
         public void AddSong(Song song)
         {

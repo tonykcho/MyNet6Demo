@@ -42,7 +42,8 @@ namespace MyNet6Demo.Core.Albums.Queries
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            var query = _albumRepository.GetQuery();
+            var query = _albumRepository.GetQuery()
+                .Include(album => album.Songs);
 
             int count = await query.CountAsync(cancellationToken);
 
