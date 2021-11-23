@@ -5,40 +5,30 @@ using MyNet6Demo.Domain.Exceptions;
 
 namespace MyNet6Demo.Core.Songs.Commands
 {
-    public class UpdateSongCommand : IRequest
+    public class DeleteSongCommand : IRequest
     {
         public Guid Guid { get; set; }
-
-        public string Name { get; set; }
-
-        public int Duration { get; set; }
     }
 
-    public class UpdateSongCommandValidator : AbstractValidator<UpdateSongCommand>
+    public class DeleteSongCommandValidator : AbstractValidator<DeleteSongCommand>
     {
-        public UpdateSongCommandValidator()
+        public DeleteSongCommandValidator()
         {
             RuleFor(x => x.Guid)
                 .NotEmpty().WithMessage("Missing song guid");
-
-            RuleFor(x => x.Name)
-                .NotEmpty().WithMessage("Missing name");
-            
-            RuleFor(x => x.Duration)
-                .NotEmpty().WithMessage("Duration must be greater than 0");
         }
     }
 
-    public class UpdateSongHandler : IRequestHandler<UpdateSongCommand>
+    public class DeleteSongHandler : IRequestHandler<DeleteSongCommand>
     {
         private readonly ISongRepository _songRepository;
 
-        public UpdateSongHandler(ISongRepository songRepository)
+        public DeleteSongHandler(ISongRepository songRepository)
         {
             _songRepository = songRepository;
         }
 
-        public async Task<Unit> Handle(UpdateSongCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(DeleteSongCommand request, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
@@ -49,10 +39,7 @@ namespace MyNet6Demo.Core.Songs.Commands
                 throw new ResourceNotFoundException(nameof(song));
             }
 
-            song.Name = request.Name;
-            song.Duration = request.Duration;
-
-            _songRepository.Update(song);
+            _songRepository.Remove(song);
 
             await _songRepository.SaveChangesAsync(cancellationToken);
 

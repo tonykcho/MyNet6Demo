@@ -57,11 +57,16 @@ namespace MyNet6Demo.Api.Controllers
             return CreatedAtRoute("GetAlbumByGuidAsync", new { guid = album.Guid }, album);
         }
 
-        [HttpPut]
+        [HttpPut("{guid}", Name = "UpdateAlbumAsync")]
         [Consumes(MediaTypeNames.Application.Json)]
-        public async Task<IActionResult> UpdateAlbumAsync([FromBody] UpdateAlbumCommand command, CancellationToken cancellationToken)
+        public async Task<IActionResult> UpdateAlbumAsync(Guid guid, [FromBody] UpdateAlbumCommand command, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
+
+            if(guid != command.Guid)
+            {
+                return BadRequest();
+            }
 
             await _mediator.Send(command);
 
