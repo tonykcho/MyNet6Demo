@@ -20,6 +20,8 @@ namespace MyNet6Demo.Infrastructure.Configurations
             builder.HasOne(song => song.Album)
                 .WithMany(album => album.Songs)
                 .HasForeignKey(song => song.AlbumId);
+
+            builder.Ignore(song => song.DomainEvents);
         }
     }
 }

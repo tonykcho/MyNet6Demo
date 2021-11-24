@@ -9,7 +9,7 @@ namespace MyNet6Demo.Infrastructure.DbContexts
                 //Seed Sample
             }
 
-            await context.SaveChangesAsync();
+            await context.SaveChangesAsync(new CancellationToken());
         }
     }
 }

@@ -19,6 +19,9 @@ namespace MyNet6Demo.Infrastructure.Configurations
 
             builder
                 .HasIndex(album => album.Id);
+
+            builder
+                .Ignore(album => album.DomainEvents);
         }
     }
 }

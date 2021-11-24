@@ -48,19 +48,6 @@ namespace MyNet6Demo.Infrastructure.Repositories
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            foreach (var entry in _context.ChangeTracker.Entries<BaseEntity>())
-            {
-                switch (entry.State)
-                {
-                    case EntityState.Added:
-                        entry.Entity.CreatedAt = DateTime.UtcNow;
-                        break;
-                    case EntityState.Modified:
-                        entry.Entity.LastUpdatedAt = DateTime.UtcNow;
-                        break;
-                }
-            }
-
             return (await _context.SaveChangesAsync(cancellationToken)) > 0;
         }
 

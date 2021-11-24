@@ -4,6 +4,7 @@ using MyNet6Demo.Domain.Interfaces;
 using MyNet6Demo.Domain.Models;
 using Microsoft.Extensions.Configuration;
 using System.Reflection;
+using MyNet6Demo.Domain.Abstracts;
 
 namespace MyNet6Demo.Infrastructure.DbContexts
 {
@@ -70,6 +71,42 @@ namespace MyNet6Demo.Infrastructure.DbContexts
 
             //     return result;
             // }
+        }
+
+        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+
+            foreach (var entry in ChangeTracker.Entries<BaseEntity>())
+            {
+                switch (entry.State)
+                {
+                    case EntityState.Added:
+                        entry.Entity.CreatedAt = DateTime.UtcNow;
+                        break;
+                    case EntityState.Modified:
+                        entry.Entity.LastUpdatedAt = DateTime.UtcNow;
+                        break;
+                }
+            }
+
+            var events = ChangeTracker.Entries<IHasDomainEvent>()
+                .Select(x => x.Entity.DomainEvents)
+                .SelectMany(x => x)
+                .ToArray();
+
+            var result = await base.SaveChangesAsync(cancellationToken);
+
+
+
+            return result;
+        }
+
+        private async Task DispatchEvents(DomainEvent[] events)
+        {
+            foreach(var domainEvent in events)
+            {
+            }
         }
     }
 }
