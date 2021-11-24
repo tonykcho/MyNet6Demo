@@ -1,4 +1,3 @@
-using System.Transactions;
 using Microsoft.EntityFrameworkCore;
 using MyNet6Demo.Domain.Interfaces;
 using MyNet6Demo.Domain.Models;
@@ -11,11 +10,13 @@ namespace MyNet6Demo.Infrastructure.DbContexts
     public class AppDbContext : DbContext, IUnitOfWork
     {
         private readonly IConfiguration _configuration;
+        private readonly IMessageBusClient _messageBusClient;
         public DbSet<Album> Albums { get; set; }
 
-        public AppDbContext(IConfiguration configuration)
+        public AppDbContext(IConfiguration configuration, IMessageBusClient messageBusClient)
         {
             _configuration = configuration;
+            _messageBusClient = messageBusClient;
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder builder)
@@ -97,15 +98,18 @@ namespace MyNet6Demo.Infrastructure.DbContexts
 
             var result = await base.SaveChangesAsync(cancellationToken);
 
-
+            await DispatchEvents(events, cancellationToken);
 
             return result;
         }
 
-        private async Task DispatchEvents(DomainEvent[] events)
+        private async Task DispatchEvents(DomainEvent[] events, CancellationToken cancellationToken)
         {
+            cancellationToken.ThrowIfCancellationRequested();
+            
             foreach(var domainEvent in events)
             {
+                await _messageBusClient.PublishDomainEventAsync(domainEvent, cancellationToken);
             }
         }
     }

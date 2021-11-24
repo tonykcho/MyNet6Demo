@@ -25,7 +25,7 @@ namespace MyNet6Demo.Api.Extensions
                 }
                 catch(Exception ex)
                 {
-                    logger.LogError(ex, "An error occurred while migrating the database used on context");
+                    // logger.LogError(ex.Message, "An error occurred while migrating the database used on context");
                 }
             }
         }

@@ -58,6 +58,8 @@ builder.Services.AddScoped<ISongRepository, SongRepository>();
 
 builder.Services.AddScoped<ICsvFileBuilder, CsvFileBuilder>();
 
+builder.Services.AddSingleton<IMessageBusClient, RabbitMQMessageBusClient>();
+
 builder.Services.AddHostedService<SomeBackgroundService>();
 
 builder.Services.AddHealthChecks()
