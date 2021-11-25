@@ -21,8 +21,6 @@ namespace MyNet6Demo.Infrastructure.DbContexts
 
         protected override void OnConfiguring(DbContextOptionsBuilder builder)
         {
-            Console.WriteLine(_configuration.GetConnectionString("App"));
-
             builder.UseMySql(_configuration.GetConnectionString("App"), new MySqlServerVersion(new Version(8, 0, 27)));
         }
 
@@ -103,7 +101,7 @@ namespace MyNet6Demo.Infrastructure.DbContexts
             return result;
         }
 
-        private async Task DispatchEvents(DomainEvent[] events, CancellationToken cancellationToken)
+        private async Task DispatchEvents<T>(T[] events, CancellationToken cancellationToken) where T : DomainEvent
         {
             cancellationToken.ThrowIfCancellationRequested();
             

@@ -12,6 +12,7 @@ using Microsoft.Extensions.Diagnostics.HealthChecks;
 using MyNet6Demo.Api.HealthChecks;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using MyNet6Demo.Core.Services;
+using MyNet6Demo.Domain.DomainEvents;
 
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
@@ -60,10 +61,22 @@ builder.Services.AddScoped<ICsvFileBuilder, CsvFileBuilder>();
 
 builder.Services.AddSingleton<IMessageBusClient, RabbitMQMessageBusClient>();
 
-builder.Services.AddHostedService<SomeBackgroundService>();
+// builder.Services.AddHostedService<SomeBackgroundService>();
 
 builder.Services.AddHealthChecks()
     .Add(new HealthCheckRegistration("Mysql", sp => new MySqlHealthCheck(sp.GetRequiredService<AppDbContext>()), default, default));
+
+builder.Services.AddSingleton<IDomainEventProcessor, DomainEventProcessor>((sp) => {
+    var processor = new DomainEventProcessor(sp);
+
+    processor.Subscribe<AlbumCreatedEvent, AlbumCreatedEventHandler>();
+
+    return processor;
+});
+
+builder.Services.AddTransient<AlbumCreatedEventHandler>();
+
+builder.Services.AddHostedService<RabbitMQMessageBusSubscriber>();
 
 var app = builder.Build();
 

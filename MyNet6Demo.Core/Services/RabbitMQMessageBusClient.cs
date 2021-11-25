@@ -21,11 +21,8 @@ namespace MyNet6Demo.Core.Services
 
             var factory = new ConnectionFactory()
             {
-                HostName = "localhost",
-                Port = 5672,
-
-                // HostName = _configuration["RabbitMQHost"],
-                // Port = int.Parse(_configuration["RabbitMQPort"]),
+                HostName = _configuration["RabbitMQHost"],
+                Port = int.Parse(_configuration["RabbitMQPort"]),
                 UserName = "guest",
                 Password = "Hkc64760575"
             };
@@ -44,18 +41,14 @@ namespace MyNet6Demo.Core.Services
             }
             catch (Exception ex)
             {
-                // _logger.LogInformation($"{_configuration["RabbitMQHost"]}");
-
-                // _logger.LogInformation($"{_configuration["RabbitMQPort"]}");
-
                 _logger.LogError($"--> Could not connect to the message bus: {ex.Message}");
             }
         }
 
-        public async Task PublishDomainEventAsync(DomainEvent domainEvent, CancellationToken cancellationToken)
+        public Task PublishDomainEventAsync<T>(T domainEvent, CancellationToken cancellationToken) where T : DomainEvent
         {
             cancellationToken.ThrowIfCancellationRequested();
-            
+
             string message = JsonSerializer.Serialize(domainEvent);
 
             if (_connection.IsOpen)
@@ -64,14 +57,24 @@ namespace MyNet6Demo.Core.Services
 
                 var body = Encoding.UTF8.GetBytes(message);
 
-                _channel.BasicPublish(exchange: "trigger", routingKey: nameof(domainEvent), body: body);
+                var queueName = typeof(T).Name;
 
-                _logger.LogInformation($"--> We have sent {message}");
+                _logger.LogInformation($"--> Queue Name is {queueName}");
+
+                // _channel.QueueDeclare(queue: queueName);
+
+                // _channel.QueueBind(queueName, "trigger", routingKey: queueName);
+
+                _channel.BasicPublish(exchange: "trigger", routingKey: queueName, body: body);
+
+                _logger.LogInformation($"--> We have sent {message}, {typeof(T).Name}");
             }
             else
             {
                 _logger.LogInformation("--> RabbitMQ Connection Closed, not sending...");
             }
+
+            return Task.CompletedTask;
         }
 
         public void Dispose()

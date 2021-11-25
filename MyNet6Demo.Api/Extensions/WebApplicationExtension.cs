@@ -15,17 +15,17 @@ namespace MyNet6Demo.Api.Extensions
 
                 try
                 {
-                    logger.LogInformation("Start Migrating AppDbContext Schema");
+                    logger.LogInformation("--> Start Migrating AppDbContext Schema");
 
                     await context.Database.MigrateAsync();
 
                     await AppDbContextSeed.SeedSampleDataAsync(context);
 
-                    logger.LogInformation("Migrate AppDbContext Success");
+                    logger.LogInformation("--> Migrate AppDbContext Success");
                 }
                 catch(Exception ex)
                 {
-                    // logger.LogError(ex.Message, "An error occurred while migrating the database used on context");
+                    logger.LogError(ex.Message, "--> An error occurred while migrating the database used on context");
                 }
             }
         }

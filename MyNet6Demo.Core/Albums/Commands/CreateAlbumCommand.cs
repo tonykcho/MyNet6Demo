@@ -2,6 +2,7 @@ using AutoMapper;
 using FluentValidation;
 using MediatR;
 using MyNet6Demo.Core.Albums.ViewModels;
+using MyNet6Demo.Domain.DomainEvents;
 using MyNet6Demo.Domain.Exceptions;
 using MyNet6Demo.Domain.Interfaces;
 using MyNet6Demo.Domain.Models;
@@ -64,6 +65,8 @@ namespace MyNet6Demo.Core.Albums.Commands
             await _albumRepository.UnitOfWork.ExecuteAsync(async () =>
             {
                 await _albumRepository.AddAsync(album, cancellationToken);
+
+                album.DomainEvents.Add(new AlbumCreatedEvent(album));
 
                 await _albumRepository.SaveChangesAsync(cancellationToken);
 
