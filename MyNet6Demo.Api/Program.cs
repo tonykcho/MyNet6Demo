@@ -71,10 +71,14 @@ builder.Services.AddSingleton<IDomainEventProcessor, DomainEventProcessor>((sp) 
 
     processor.Subscribe<AlbumCreatedEvent, AlbumCreatedEventHandler>();
 
+    processor.Subscribe<AlbumUpdatedEvent, AlbumUpdatedEventHandler>();
+
     return processor;
 });
 
 builder.Services.AddTransient<AlbumCreatedEventHandler>();
+
+builder.Services.AddTransient<AlbumUpdatedEventHandler>();
 
 builder.Services.AddHostedService<RabbitMQMessageBusSubscriber>();
 

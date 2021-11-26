@@ -33,7 +33,7 @@ namespace MyNet6Demo.Core.BackgroundServices
             {
                 _channel.QueueDeclare(queue: key);
 
-                _channel.QueueBind(key, "trigger", routingKey: key);
+                _channel.QueueBind(queue: key, "direct", routingKey: key);
 
                 var consumer = new EventingBasicConsumer(_channel);
 
@@ -62,7 +62,7 @@ namespace MyNet6Demo.Core.BackgroundServices
 
             _channel = _connection.CreateModel();
 
-            _channel.ExchangeDeclare(exchange: "trigger", type: ExchangeType.Fanout);
+            _channel.ExchangeDeclare(exchange: "direct", type: ExchangeType.Direct);
 
             Console.WriteLine("--> Listening on the message bus");
 

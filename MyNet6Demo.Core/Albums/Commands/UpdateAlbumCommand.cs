@@ -1,6 +1,7 @@
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using MyNet6Demo.Domain.DomainEvents;
 using MyNet6Demo.Domain.Exceptions;
 using MyNet6Demo.Domain.Interfaces;
 using MyNet6Demo.Domain.Models;
@@ -75,6 +76,8 @@ namespace MyNet6Demo.Core.Albums.Commands
                 album.ReleaseDate = request.ReleaseDate;
 
                 _albumRepository.Update(album);
+
+                album.DomainEvents.Add(new AlbumUpdatedEvent(album));
 
                 await _albumRepository.SaveChangesAsync(cancellationToken);
 

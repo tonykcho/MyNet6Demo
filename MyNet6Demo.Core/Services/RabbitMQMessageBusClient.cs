@@ -33,7 +33,7 @@ namespace MyNet6Demo.Core.Services
 
                 _channel = _connection.CreateModel();
 
-                _channel.ExchangeDeclare(exchange: "trigger", type: ExchangeType.Fanout);
+                _channel.ExchangeDeclare(exchange: "direct", type: ExchangeType.Direct);
 
                 _connection.ConnectionShutdown += OnRabbitMQ_ConnectionShutdown;
 
@@ -49,7 +49,7 @@ namespace MyNet6Demo.Core.Services
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            string message = JsonSerializer.Serialize(domainEvent);
+            string message = JsonSerializer.Serialize(domainEvent, domainEvent.GetType());
 
             if (_connection.IsOpen)
             {
@@ -57,17 +57,11 @@ namespace MyNet6Demo.Core.Services
 
                 var body = Encoding.UTF8.GetBytes(message);
 
-                var queueName = typeof(T).Name;
+                var queueName = domainEvent.GetType().Name;
 
                 _logger.LogInformation($"--> Queue Name is {queueName}");
 
-                // _channel.QueueDeclare(queue: queueName);
-
-                // _channel.QueueBind(queueName, "trigger", routingKey: queueName);
-
-                _channel.BasicPublish(exchange: "trigger", routingKey: queueName, body: body);
-
-                _logger.LogInformation($"--> We have sent {message}, {typeof(T).Name}");
+                _channel.BasicPublish(exchange: "direct", routingKey: queueName, body: body);
             }
             else
             {
