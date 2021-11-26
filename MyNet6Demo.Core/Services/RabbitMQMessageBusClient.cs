@@ -24,7 +24,7 @@ namespace MyNet6Demo.Core.Services
                 HostName = _configuration["RabbitMQHost"],
                 Port = int.Parse(_configuration["RabbitMQPort"]),
                 UserName = "guest",
-                Password = "Hkc64760575"
+                Password = "guest"
             };
 
             try

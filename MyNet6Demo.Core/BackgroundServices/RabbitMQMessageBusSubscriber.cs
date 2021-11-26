@@ -1,4 +1,5 @@
 using System.Text;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using MyNet6Demo.Domain.Interfaces;
@@ -9,6 +10,7 @@ namespace MyNet6Demo.Core.BackgroundServices
 {
     public class RabbitMQMessageBusSubscriber : BackgroundService
     {
+        private readonly IConfiguration _configuration;
         private readonly IDomainEventProcessor _domainEventProcessor;
 
         private readonly ILogger<RabbitMQMessageBusSubscriber> _logger;
@@ -17,9 +19,10 @@ namespace MyNet6Demo.Core.BackgroundServices
 
         private IModel _channel;
 
-        public RabbitMQMessageBusSubscriber(IDomainEventProcessor domainEventProcessor, ILogger<RabbitMQMessageBusSubscriber> logger)
+        public RabbitMQMessageBusSubscriber(IDomainEventProcessor domainEventProcessor, ILogger<RabbitMQMessageBusSubscriber> logger, IConfiguration configuration)
         {
             _domainEventProcessor = domainEventProcessor;
+            _configuration = configuration;
             _logger = logger;
 
             InitializeRabbitMQ();
@@ -56,8 +59,13 @@ namespace MyNet6Demo.Core.BackgroundServices
 
         private void InitializeRabbitMQ()
         {
-            var factory = new ConnectionFactory() { HostName = "localhost", Port = 5672, UserName = "guest", Password = "Hkc64760575" };
-
+            var factory = new ConnectionFactory()
+            {
+                HostName = _configuration["RabbitMQHost"],
+                Port = int.Parse(_configuration["RabbitMQPort"]),
+                UserName = "guest",
+                Password = "guest"
+            };
             _connection = factory.CreateConnection();
 
             _channel = _connection.CreateModel();
