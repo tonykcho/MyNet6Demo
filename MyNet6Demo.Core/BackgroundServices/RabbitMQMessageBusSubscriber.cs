@@ -2,6 +2,7 @@ using System.Text;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using MyNet6Demo.Core.Interfaces;
 using MyNet6Demo.Domain.Interfaces;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
@@ -10,22 +11,27 @@ namespace MyNet6Demo.Core.BackgroundServices
 {
     public class RabbitMQMessageBusSubscriber : BackgroundService
     {
-        private readonly IConfiguration _configuration;
         private readonly IDomainEventProcessor _domainEventProcessor;
-
         private readonly ILogger<RabbitMQMessageBusSubscriber> _logger;
-
-        private IConnection _connection;
+        private readonly IRabbitMQConnectionManager _rabbitMQConnectionManager;
 
         private IModel _channel;
 
-        public RabbitMQMessageBusSubscriber(IDomainEventProcessor domainEventProcessor, ILogger<RabbitMQMessageBusSubscriber> logger, IConfiguration configuration)
+        public RabbitMQMessageBusSubscriber(IDomainEventProcessor domainEventProcessor, ILogger<RabbitMQMessageBusSubscriber> logger, IRabbitMQConnectionManager rabbitMQConnectionManager)
         {
+            _rabbitMQConnectionManager = rabbitMQConnectionManager;
+
             _domainEventProcessor = domainEventProcessor;
-            _configuration = configuration;
+            
             _logger = logger;
 
-            InitializeRabbitMQ();
+            var connection = _rabbitMQConnectionManager.GetConnection();
+
+            _channel = connection.CreateModel();
+
+            _channel.ExchangeDeclare(exchange: "direct", type: ExchangeType.Direct);
+
+            _logger.LogInformation("--> Listening on the message bus");
         }
 
         protected override Task ExecuteAsync(CancellationToken stoppingToken)
@@ -55,42 +61,6 @@ namespace MyNet6Demo.Core.BackgroundServices
             }
 
             return Task.CompletedTask;
-        }
-
-        private void InitializeRabbitMQ()
-        {
-            var factory = new ConnectionFactory()
-            {
-                HostName = _configuration["RabbitMQHost"],
-                Port = int.Parse(_configuration["RabbitMQPort"]),
-                UserName = "guest",
-                Password = "guest"
-            };
-            _connection = factory.CreateConnection();
-
-            _channel = _connection.CreateModel();
-
-            _channel.ExchangeDeclare(exchange: "direct", type: ExchangeType.Direct);
-
-            Console.WriteLine("--> Listening on the message bus");
-
-            _connection.ConnectionShutdown += OnRabbitMQ_ConnectionShutdown;
-        }
-
-        public void Dispose()
-        {
-            _logger.LogInformation("--> RabbitMQ MessageBus Disposed");
-
-            if (_channel.IsOpen)
-            {
-                _channel.Close();
-
-                _connection.Close();
-            }
-        }
-        private void OnRabbitMQ_ConnectionShutdown(object? sender, ShutdownEventArgs args)
-        {
-            _logger.LogInformation("--> RabbitMQ Connection Shutdown");
         }
     }
 }
