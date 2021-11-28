@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using MyNet6Demo.Core.Albums.ViewModels;
 using MyNet6Demo.Core.Common;
 using MyNet6Demo.Domain.Interfaces;
+using MyNet6Demo.Domain.Models;
 
 namespace MyNet6Demo.Core.Albums.Queries
 {
@@ -13,6 +14,8 @@ namespace MyNet6Demo.Core.Albums.Queries
         public int PageNumber { get; set; } = 1;
 
         public int PageSize { get; set; } = 10;
+
+        public string[] Circles { get; set; } = new string[0];
     }
 
     public class GetAlbumListQueryValidator : AbstractValidator<GetAlbumListQuery>
@@ -42,8 +45,13 @@ namespace MyNet6Demo.Core.Albums.Queries
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            var query = _albumRepository.GetQuery()
+            IQueryable<Album> query = _albumRepository.GetQuery()
                 .Include(album => album.Songs);
+
+            if(request.Circles.Length > 0)
+            {
+                query = query.Where(album => request.Circles.Contains(album.Circle));
+            }
 
             int count = await query.CountAsync(cancellationToken);
 
