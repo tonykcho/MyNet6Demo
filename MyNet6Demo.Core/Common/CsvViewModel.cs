@@ -1,6 +1,6 @@
-namespace MyNet6Demo.Core.Albums.ViewModels
+namespace MyNet6Demo.Core.Common
 {
-    public class AlbumExportViewModel
+    public class CsvViewModel
     {
         public string FileName { get; set; }
 

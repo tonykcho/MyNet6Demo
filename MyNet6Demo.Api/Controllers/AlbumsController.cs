@@ -25,7 +25,7 @@ namespace MyNet6Demo.Api.Controllers
             return Ok(await _mediator.Send(query, cancellationToken));
         }
 
-        [HttpGet("export", Name = "ExportAlbumListAsync")]
+        [HttpGet("csv", Name = "ExportAlbumListAsync")]
         public async Task<IActionResult> ExportAlbumListAsync(CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();

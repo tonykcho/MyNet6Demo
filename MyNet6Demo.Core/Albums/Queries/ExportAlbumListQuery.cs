@@ -2,16 +2,17 @@ using AutoMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using MyNet6Demo.Core.Albums.ViewModels;
+using MyNet6Demo.Core.Common;
 using MyNet6Demo.Domain.Interfaces;
 
 namespace MyNet6Demo.Core.Albums.Queries
 {
-    public class ExportAlbumListQuery : IRequest<AlbumExportViewModel>
+    public class ExportAlbumListQuery : IRequest<CsvViewModel>
     {
 
     }
 
-    public class ExportAlbumListHandler : IRequestHandler<ExportAlbumListQuery, AlbumExportViewModel>
+    public class ExportAlbumListHandler : IRequestHandler<ExportAlbumListQuery, CsvViewModel>
     {
         private readonly IAlbumRepository _albumRepository;
 
@@ -26,7 +27,7 @@ namespace MyNet6Demo.Core.Albums.Queries
             _csvFileBuilder = csvFileBuilder;
         }
 
-        public async Task<AlbumExportViewModel> Handle(ExportAlbumListQuery request, CancellationToken cancellationToken)
+        public async Task<CsvViewModel> Handle(ExportAlbumListQuery request, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
@@ -34,7 +35,7 @@ namespace MyNet6Demo.Core.Albums.Queries
 
             var records = _mapper.Map<IEnumerable<AlbumExportRecord>>(items);
 
-            AlbumExportViewModel csv = new AlbumExportViewModel
+            CsvViewModel csv = new CsvViewModel
             {
                 FileName = "Albums.csv",
                 ContentType = "text/csv",

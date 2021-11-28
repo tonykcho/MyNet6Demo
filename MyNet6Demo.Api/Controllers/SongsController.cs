@@ -25,6 +25,16 @@ namespace MyNet6Demo.Api.Controllers
             return Ok(song);
         }
 
+        [HttpGet("csv", Name = "ExportSongListAsync")]
+        public async Task<IActionResult> ExportSongListAsync(CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+
+            var csv = await _mediator.Send(new ExportSongListQuery());
+
+            return File(csv.Content, csv.ContentType, csv.FileName);
+        }
+
         [HttpPost(Name = "CreateSongAsync")]
         public async Task<IActionResult> CreateSongAsync([FromBody] CreateSongCommand command, CancellationToken cancellationToken)
         {
