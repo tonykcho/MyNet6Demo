@@ -20,8 +20,8 @@ namespace MyNet6Demo.Core.Services
 
             _rabbitMQConnectionManager = rabbitMQConnectionManager;
 
-            _channel = _rabbitMQConnectionManager.GetConnection().CreateModel();
-
+            _channel = _rabbitMQConnectionManager.GetChannel();
+            
             _channel.ExchangeDeclare(exchange: "direct", type: ExchangeType.Direct);
         }
 

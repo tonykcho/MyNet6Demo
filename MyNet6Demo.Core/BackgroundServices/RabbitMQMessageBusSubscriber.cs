@@ -25,11 +25,7 @@ namespace MyNet6Demo.Core.BackgroundServices
             
             _logger = logger;
 
-            var connection = _rabbitMQConnectionManager.GetConnection();
-
-            _channel = connection.CreateModel();
-
-            _channel.ExchangeDeclare(exchange: "direct", type: ExchangeType.Direct);
+            _channel = _rabbitMQConnectionManager.GetChannel();
 
             _logger.LogInformation("--> Listening on the message bus");
         }

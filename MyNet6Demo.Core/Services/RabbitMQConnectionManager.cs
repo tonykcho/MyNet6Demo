@@ -11,6 +11,7 @@ namespace MyNet6Demo.Core.Services
         private readonly ILogger<RabbitMQConnectionManager> _logger;
         private ConnectionFactory _factory;
         private IConnection _connection;
+        private IModel _channel;
 
         public RabbitMQConnectionManager(IConfiguration configuration, ILogger<RabbitMQConnectionManager> logger)
         {
@@ -33,6 +34,8 @@ namespace MyNet6Demo.Core.Services
                 _logger.LogInformation("--> Connected To RabbitMQ");
 
                 _connection.ConnectionShutdown += OnRabbitMQ_ConnectionShutdown;
+
+                _channel = _connection.CreateModel();
             }
             catch (Exception ex)
             {
@@ -43,6 +46,11 @@ namespace MyNet6Demo.Core.Services
         public IConnection GetConnection()
         {
             return _connection;
+        }
+
+        public IModel GetChannel()
+        {
+            return _channel;
         }
 
         private void OnRabbitMQ_ConnectionShutdown(object? sender, ShutdownEventArgs args)
