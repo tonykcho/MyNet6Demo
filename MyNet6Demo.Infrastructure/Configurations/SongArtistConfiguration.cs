@@ -8,6 +8,8 @@ namespace MyNet6Demo.Infrastructure.Configurations
     {
         public void Configure(EntityTypeBuilder<SongArtist> builder)
         {
+            builder.ToTable("SongArtists");
+            
             builder.HasKey(songArtist => new { songArtist.ArtistId, songArtist.SongId });
 
             builder.HasIndex(songArtist => songArtist.ArtistId);

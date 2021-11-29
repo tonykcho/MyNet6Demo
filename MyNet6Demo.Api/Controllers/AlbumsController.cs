@@ -47,7 +47,7 @@ namespace MyNet6Demo.Api.Controllers
             return File(csv.Content, csv.ContentType, csv.FileName);
         }
 
-        [HttpPost]
+        [HttpPost(Name = "CreateAlbumAsync")]
         [Consumes(MediaTypeNames.Application.Json)]
         public async Task<IActionResult> CreateAlbumAsync([FromBody] CreateAlbumCommand command, CancellationToken cancellationToken)
         {

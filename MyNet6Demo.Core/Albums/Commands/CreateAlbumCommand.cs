@@ -52,7 +52,7 @@ namespace MyNet6Demo.Core.Albums.Commands
 
             if (album is not null)
             {
-                throw new ResourceAlreadyExistException(nameof(album));
+                throw new ResourceAlreadyExistException(request.AlbumName);
             }
 
             album = new Album()

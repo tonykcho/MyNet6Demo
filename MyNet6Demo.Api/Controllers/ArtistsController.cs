@@ -25,14 +25,24 @@ namespace MyNet6Demo.Api.Controllers
             return Ok(artist);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> CreateArtistAsync(CreateArtistCommand command, CancellationToken cancellationToken)
+        [HttpGet(Name = "GetArtistListAsync")]
+        public async Task<IActionResult> GetArtistListAsync([FromQuery] GetArtistListQuery query, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+
+            var view = await _mediator.Send(query, cancellationToken);
+
+            return Ok(view);
+        }
+
+        [HttpPost(Name = "CreateArtistAsync")]
+        public async Task<IActionResult> CreateArtistAsync([FromBody] CreateArtistCommand command, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
             var view = await _mediator.Send(command);
 
-            return CreatedAtRoute("", new { guid = view.Guid }, view);
+            return CreatedAtRoute("GetArtistByGuidAsync", new { guid = view.Guid }, view);
         }
     }
 }

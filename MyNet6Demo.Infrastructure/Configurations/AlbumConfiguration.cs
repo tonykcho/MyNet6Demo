@@ -9,6 +9,9 @@ namespace MyNet6Demo.Infrastructure.Configurations
         public void Configure(EntityTypeBuilder<Album> builder)
         {
             builder
+                .ToTable("Albums");
+                
+            builder
                 .HasKey(album => album.Id);
                 
             builder.Property(album => album.Guid);

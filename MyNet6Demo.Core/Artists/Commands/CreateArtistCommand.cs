@@ -41,7 +41,7 @@ namespace MyNet6Demo.Core.Artists.Commands
 
             if (artist is not null)
             {
-                throw new ResourceAlreadyExistException(nameof(artist));
+                throw new ResourceAlreadyExistException(request.Name);
             }
 
             artist = new Artist
