@@ -1,7 +1,7 @@
 # MyNet6Demo
  
 Build Solution
-dotnet build /nowarn:CS8618 /nowarn:CS8603
+dotnet build /nowarn:CS8618 /nowarn:CS8603 /nowarn:CS8600 /nowarn:CS8602
 
 # Add Migration
 dotnet ef migrations add init -s ../MyNet6Demo.Api -o ./Migrations --context AppDbContext

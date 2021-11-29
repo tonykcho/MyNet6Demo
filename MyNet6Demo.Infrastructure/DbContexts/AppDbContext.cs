@@ -13,6 +13,10 @@ namespace MyNet6Demo.Infrastructure.DbContexts
         private readonly IMessageBusClient _messageBusClient;
         public DbSet<Album> Albums { get; set; }
 
+        public DbSet<Song> Songs { get; set; }
+
+        public DbSet<Artist> Artists { get; set; }
+
         public AppDbContext(IConfiguration configuration, IMessageBusClient messageBusClient)
         {
             _configuration = configuration;
@@ -104,8 +108,8 @@ namespace MyNet6Demo.Infrastructure.DbContexts
         private async Task DispatchEvents<T>(T[] events, CancellationToken cancellationToken) where T : DomainEvent
         {
             cancellationToken.ThrowIfCancellationRequested();
-            
-            foreach(var domainEvent in events)
+
+            foreach (var domainEvent in events)
             {
                 await _messageBusClient.PublishDomainEventAsync(domainEvent, cancellationToken);
             }

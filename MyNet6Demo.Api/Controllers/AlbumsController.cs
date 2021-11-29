@@ -17,6 +17,18 @@ namespace MyNet6Demo.Api.Controllers
             _mediator = mediator;
         }
 
+
+        // [Authorize]
+        [HttpGet("{guid}", Name = "GetAlbumByGuidAsync")]
+        public async Task<IActionResult> GetAlbumByGuidAsync(Guid guid, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+
+            var album = await _mediator.Send(new GetAlbumByGuidQuery { Guid = guid }, cancellationToken);
+
+            return Ok(album);
+        }
+
         [HttpGet(Name = "GetAlbumListAsync")]
         public async Task<IActionResult> GetAlbumListAsync([FromQuery] GetAlbumListQuery query, CancellationToken cancellationToken)
         {
@@ -33,17 +45,6 @@ namespace MyNet6Demo.Api.Controllers
             var csv = await _mediator.Send(new ExportAlbumListQuery());
 
             return File(csv.Content, csv.ContentType, csv.FileName);
-        }
-
-        // [Authorize]
-        [HttpGet("{guid}", Name = "GetAlbumByGuidAsync")]
-        public async Task<IActionResult> GetAlbumByGuidAsync(Guid guid, CancellationToken cancellationToken)
-        {
-            cancellationToken.ThrowIfCancellationRequested();
-
-            var album = await _mediator.Send(new GetAlbumByGuidQuery { Guid = guid }, cancellationToken);
-
-            return Ok(album);
         }
 
         [HttpPost]
@@ -63,7 +64,7 @@ namespace MyNet6Demo.Api.Controllers
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            if(guid != command.Guid)
+            if (guid != command.Guid)
             {
                 return BadRequest();
             }

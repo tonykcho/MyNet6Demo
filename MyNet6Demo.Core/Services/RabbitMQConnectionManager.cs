@@ -2,6 +2,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using MyNet6Demo.Core.Interfaces;
 using RabbitMQ.Client;
+using RabbitMQ.Client.Events;
 
 namespace MyNet6Demo.Core.Services
 {

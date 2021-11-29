@@ -59,6 +59,8 @@ builder.Services.AddScoped<IAlbumRepository, AlbumRepository>();
 
 builder.Services.AddScoped<ISongRepository, SongRepository>();
 
+builder.Services.AddScoped<IArtistRepository, ArtistRepository>();
+
 builder.Services.AddScoped<ICsvFileBuilder, CsvFileBuilder>();
 
 builder.Services.AddSingleton<IRabbitMQConnectionManager, RabbitMQConnectionManager>();
@@ -78,12 +80,16 @@ builder.Services.AddSingleton<IDomainEventProcessor, DomainEventProcessor>((sp) 
 
     processor.Subscribe<AlbumUpdatedEvent, AlbumUpdatedEventHandler>();
 
+    processor.Subscribe<ArtistCreatedEvent, ArtistCreatedEventHandler>();
+
     return processor;
 });
 
 builder.Services.AddTransient<AlbumCreatedEventHandler>();
 
 builder.Services.AddTransient<AlbumUpdatedEventHandler>();
+
+builder.Services.AddTransient<ArtistCreatedEventHandler>();
 
 builder.Services.AddHostedService<RabbitMQMessageBusSubscriber>();
 

@@ -10,6 +10,8 @@ namespace MyNet6Demo.Domain.Models
 
         public string Circle { get; set; }
 
+        public string? Description { get; set; }
+
         public DateTime ReleaseDate { get; set; }
 
         public ICollection<Song> Songs { get; set; } = new List<Song>();
