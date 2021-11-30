@@ -82,6 +82,8 @@ builder.Services.AddSingleton<IDomainEventProcessor, DomainEventProcessor>((sp) 
 
     processor.Subscribe<ArtistCreatedEvent, ArtistCreatedEventHandler>();
 
+    processor.Subscribe<ArtistUpdatedEvent, ArtistUpdatedEventHandler>();
+
     return processor;
 });
 
@@ -90,6 +92,8 @@ builder.Services.AddTransient<AlbumCreatedEventHandler>();
 builder.Services.AddTransient<AlbumUpdatedEventHandler>();
 
 builder.Services.AddTransient<ArtistCreatedEventHandler>();
+
+builder.Services.AddTransient<ArtistUpdatedEventHandler>();
 
 builder.Services.AddHostedService<RabbitMQMessageBusSubscriber>();
 

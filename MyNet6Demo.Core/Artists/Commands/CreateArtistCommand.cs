@@ -5,6 +5,7 @@ using MyNet6Demo.Domain.Interfaces;
 using MyNet6Demo.Domain.Exceptions;
 using AutoMapper;
 using MyNet6Demo.Domain.Models;
+using MyNet6Demo.Domain.DomainEvents;
 
 namespace MyNet6Demo.Core.Artists.Commands
 {
@@ -50,6 +51,8 @@ namespace MyNet6Demo.Core.Artists.Commands
             };
 
             await _artistRepository.AddAsync(artist, cancellationToken);
+
+            artist.DomainEvents.Add(new ArtistCreatedEvent(artist));
 
             await _artistRepository.SaveChangesAsync(cancellationToken);
 

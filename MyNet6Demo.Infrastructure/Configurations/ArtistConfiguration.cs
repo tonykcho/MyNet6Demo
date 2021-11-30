@@ -18,6 +18,8 @@ namespace MyNet6Demo.Infrastructure.Configurations
 
             builder.Property(artist => artist.Id)
                 .ValueGeneratedOnAdd();
+
+            builder.Ignore(artist => artist.DomainEvents);
         }
     }
 }
