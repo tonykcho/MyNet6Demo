@@ -14,6 +14,8 @@ using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using MyNet6Demo.Core.Services;
 using MyNet6Demo.Domain.DomainEvents;
 using MyNet6Demo.Core.Interfaces;
+using FirebaseAdmin;
+using Google.Apis.Auth.OAuth2;
 
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
@@ -66,14 +68,14 @@ builder.Services.AddScoped<ICsvFileBuilder, CsvFileBuilder>();
 builder.Services.AddSingleton<IRabbitMQConnectionManager, RabbitMQConnectionManager>();
 
 builder.Services.AddSingleton<IMessageBusClient, RabbitMQMessageBusClient>();
-
 // builder.Services.AddHostedService<SomeBackgroundService>();
 
 builder.Services.AddHealthChecks()
     .Add(new HealthCheckRegistration("Mysql", sp => new MySqlHealthCheck(sp.GetRequiredService<AppDbContext>()), default, default))
     .Add(new HealthCheckRegistration("RabbitMQ", sp => new RabbitMQHealthCheck(sp.GetRequiredService<IRabbitMQConnectionManager>()), default, default));
 
-builder.Services.AddSingleton<IDomainEventProcessor, DomainEventProcessor>((sp) => {
+builder.Services.AddSingleton<IDomainEventProcessor, DomainEventProcessor>((sp) =>
+{
     var processor = new DomainEventProcessor(sp);
 
     processor.Subscribe<AlbumCreatedEvent, AlbumCreatedEventHandler>();
@@ -96,6 +98,26 @@ builder.Services.AddTransient<ArtistCreatedEventHandler>();
 builder.Services.AddTransient<ArtistUpdatedEventHandler>();
 
 builder.Services.AddHostedService<RabbitMQMessageBusSubscriber>();
+
+if (Boolean.Parse(builder.Configuration["FirebaseMessagingOn"]) == true)
+{
+    Log.Information("--> Firebase Messaging On");
+    if (FirebaseApp.DefaultInstance is null)
+    {
+        FirebaseApp.Create(new AppOptions()
+        {
+            Credential = GoogleCredential.FromFile("firebase_credential.json")
+        });
+    }
+
+    builder.Services.AddSingleton<IFirebaseMessagingService, FirebaseMessagingService>();
+    Log.Information("--> Firebase Messaging Registration Success");
+}
+else
+{
+    builder.Services.AddSingleton<IFirebaseMessagingService, FirebaseMessagingMockService>();
+}
+
 
 var app = builder.Build();
 
