@@ -106,7 +106,9 @@ if (Boolean.Parse(builder.Configuration["FirebaseMessagingOn"]) == true)
     {
         FirebaseApp.Create(new AppOptions()
         {
-            Credential = GoogleCredential.FromFile("firebase_credential.json")
+            // Please Set up GOOGLE_APPLICATION_CREDENTIALS Env
+            // Credential = GoogleCredential.FromFile("firebase_credential.json")
+            Credential = GoogleCredential.FromFile(builder.Configuration["FirebaseCredential"])
         });
     }
 
