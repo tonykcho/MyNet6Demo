@@ -1,0 +1,8 @@
+version: "3.9"
+services:
+  api:
+    image: tony3527657/net6demo
+    ports:
+      - "5000:80"
+    vol
+    
