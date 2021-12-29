@@ -2,6 +2,7 @@ using MediatR;
 using FluentValidation;
 using MyNet6Demo.Domain.Interfaces;
 using MyNet6Demo.Domain.Exceptions;
+using MyNet6Demo.Domain.DomainEvents;
 
 namespace MyNet6Demo.Core.Songs.Commands
 {
@@ -23,7 +24,7 @@ namespace MyNet6Demo.Core.Songs.Commands
 
             RuleFor(x => x.Name)
                 .NotEmpty().WithMessage("Missing name");
-            
+
             RuleFor(x => x.Duration)
                 .NotEmpty().WithMessage("Duration must be greater than 0");
         }
@@ -44,7 +45,7 @@ namespace MyNet6Demo.Core.Songs.Commands
 
             var song = await _songRepository.GetByGuidAsync(request.Guid, cancellationToken);
 
-            if(song is null)
+            if (song is null)
             {
                 throw new ResourceNotFoundException(nameof(song));
             }
@@ -53,6 +54,8 @@ namespace MyNet6Demo.Core.Songs.Commands
             song.Duration = request.Duration;
 
             _songRepository.Update(song);
+
+            song.DomainEvents.Add(new SongUpdatedEvent());
 
             await _songRepository.SaveChangesAsync(cancellationToken);
 

@@ -82,9 +82,19 @@ builder.Services.AddSingleton<IDomainEventProcessor, DomainEventProcessor>((sp) 
 
     processor.Subscribe<AlbumUpdatedEvent, AlbumUpdatedEventHandler>();
 
+    processor.Subscribe<AlbumDeletedEvent, AlbumDeletedEventHandler>();
+
     processor.Subscribe<ArtistCreatedEvent, ArtistCreatedEventHandler>();
 
     processor.Subscribe<ArtistUpdatedEvent, ArtistUpdatedEventHandler>();
+
+    processor.Subscribe<ArtistDeletedEvent, ArtistDeletedEventHandler>();
+
+    processor.Subscribe<SongCreatedEvent, SongCreatedEventHandler>();
+
+    processor.Subscribe<SongUpdatedEvent, SongUpdatedEventHandler>();
+
+    processor.Subscribe<SongDeletedEvent, SongDeletedEventHandler>();
 
     return processor;
 });
@@ -93,9 +103,19 @@ builder.Services.AddTransient<AlbumCreatedEventHandler>();
 
 builder.Services.AddTransient<AlbumUpdatedEventHandler>();
 
+builder.Services.AddTransient<AlbumDeletedEventHandler>();
+
 builder.Services.AddTransient<ArtistCreatedEventHandler>();
 
 builder.Services.AddTransient<ArtistUpdatedEventHandler>();
+
+builder.Services.AddTransient<ArtistDeletedEventHandler>();
+
+builder.Services.AddTransient<SongCreatedEventHandler>();
+
+builder.Services.AddTransient<SongUpdatedEventHandler>();
+
+builder.Services.AddTransient<SongDeletedEventHandler>();
 
 builder.Services.AddHostedService<RabbitMQMessageBusSubscriber>();
 

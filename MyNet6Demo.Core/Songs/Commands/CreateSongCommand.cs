@@ -2,6 +2,7 @@ using AutoMapper;
 using FluentValidation;
 using MediatR;
 using MyNet6Demo.Core.Songs.ViewModels;
+using MyNet6Demo.Domain.DomainEvents;
 using MyNet6Demo.Domain.Exceptions;
 using MyNet6Demo.Domain.Interfaces;
 using MyNet6Demo.Domain.Models;
@@ -64,6 +65,8 @@ namespace MyNet6Demo.Core.Songs.Commands
             album.AddSong(song);
 
             _albumRepository.Update(album);
+
+            song.DomainEvents.Add(new SongCreatedEvent(song));
 
             await _albumRepository.SaveChangesAsync(cancellationToken);
 

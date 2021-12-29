@@ -1,5 +1,6 @@
 using FluentValidation;
 using MediatR;
+using MyNet6Demo.Domain.DomainEvents;
 using MyNet6Demo.Domain.Exceptions;
 using MyNet6Demo.Domain.Interfaces;
 
@@ -34,13 +35,15 @@ namespace MyNet6Demo.Core.Albums.Commands
 
             var album = await _albumRepository.GetByGuidAsync(request.Guid, cancellationToken);
 
-            if(album is null)
+            if (album is null)
             {
                 throw new ResourceNotFoundException(nameof(album));
             }
 
             _albumRepository.Remove(album);
-            
+
+            album.DomainEvents.Add(new AlbumDeletedEvent(album));
+
             await _albumRepository.SaveChangesAsync(cancellationToken);
 
             return default;

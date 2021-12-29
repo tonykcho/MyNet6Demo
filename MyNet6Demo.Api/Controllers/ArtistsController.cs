@@ -44,5 +44,15 @@ namespace MyNet6Demo.Api.Controllers
 
             return CreatedAtRoute("GetArtistByGuidAsync", new { guid = view.Guid }, view);
         }
+
+        [HttpDelete("{guid}", Name = "DeleteArtistAsync")]
+        public async Task<IActionResult> DeleteArtistAsync(Guid guid, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+
+            await _mediator.Send(new DeleteArtistCommand { Guid = guid });
+
+            return NoContent();
+        }
     }
 }

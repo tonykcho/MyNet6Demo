@@ -2,6 +2,7 @@ using MediatR;
 using FluentValidation;
 using MyNet6Demo.Domain.Interfaces;
 using MyNet6Demo.Domain.Exceptions;
+using MyNet6Demo.Domain.DomainEvents;
 
 namespace MyNet6Demo.Core.Songs.Commands
 {
@@ -40,6 +41,8 @@ namespace MyNet6Demo.Core.Songs.Commands
             }
 
             _songRepository.Remove(song);
+
+            song.DomainEvents.Add(new SongDeletedEvent(song));
 
             await _songRepository.SaveChangesAsync(cancellationToken);
 
