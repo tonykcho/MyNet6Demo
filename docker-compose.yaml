@@ -4,5 +4,7 @@ services:
     image: tony3527657/net6demo
     ports:
       - "5000:80"
-    vol
+    # volumes:
+    #   -hostPath:containerPath:ro
+    
     
