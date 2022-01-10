@@ -89,13 +89,6 @@ namespace MyNet6Demo.Api.Filters
                 return;
             }
 
-            if (context.Exception is OperationCanceledException)
-            {
-                context.ExceptionHandled = true;
-
-                return;
-            }
-
             context.HttpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
 
             IDictionary<string, string> messages = new Dictionary<string, string>();

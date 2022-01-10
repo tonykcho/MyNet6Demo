@@ -1,13 +1,17 @@
+using System.Text.Json.Serialization;
+
 namespace MyNet6Demo.Domain.Models
 {
     public class SongArtist
     {
         public int ArtistId { get; set; }
 
+        [JsonIgnore]
         public Artist Artist { get; set; }
 
         public int SongId { get; set; }
 
+        [JsonIgnore]
         public Song Song { get; set; }
 
         public string ArtistType { get; set; }

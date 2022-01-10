@@ -18,7 +18,11 @@ namespace MyNet6Demo.Core.Artists.Commands
     {
         public UpdateArtistCommandValidator()
         {
-
+            RuleFor(x => x.Guid)
+                .NotEmpty().WithMessage("Missing artist uuid!");
+                
+            RuleFor(x => x.Name)
+                .NotEmpty().WithMessage("Missing name");
         }
     }
 

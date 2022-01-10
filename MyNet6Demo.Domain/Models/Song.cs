@@ -8,6 +8,7 @@ namespace MyNet6Demo.Domain.Models
     {
         public int AlbumId { get; set; }
 
+        [JsonIgnore]
         public Album Album { get; set; }
 
         public string Name { get; set; }

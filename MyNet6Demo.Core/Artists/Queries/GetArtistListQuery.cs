@@ -47,7 +47,7 @@ namespace MyNet6Demo.Core.Artists.Queries
 
             int count = await query.CountAsync(cancellationToken);
 
-            var items = await query.Skip((request.PageNumber - 1) * request.PageSize).Take(request.PageSize).ToListAsync();
+            var items = await query.Skip((request.PageNumber - 1) * request.PageSize).Take(request.PageSize).ToListAsync(cancellationToken);
 
             var views = _mapper.Map<IList<ArtistViewModel>>(items);
 
