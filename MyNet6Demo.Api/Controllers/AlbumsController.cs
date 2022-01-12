@@ -7,6 +7,7 @@ using MyNet6Demo.Core.Albums.Queries;
 
 namespace MyNet6Demo.Api.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     public class AlbumsController : ControllerBase
     {
@@ -18,7 +19,7 @@ namespace MyNet6Demo.Api.Controllers
         }
 
 
-        // [Authorize]
+        [AllowAnonymous]
         [HttpGet("{guid}", Name = "GetAlbumByGuidAsync")]
         public async Task<IActionResult> GetAlbumByGuidAsync(Guid guid, CancellationToken cancellationToken)
         {
@@ -29,6 +30,7 @@ namespace MyNet6Demo.Api.Controllers
             return Ok(album);
         }
 
+        [AllowAnonymous]
         [HttpGet(Name = "GetAlbumListAsync")]
         public async Task<IActionResult> GetAlbumListAsync([FromQuery] GetAlbumListQuery query, CancellationToken cancellationToken)
         {

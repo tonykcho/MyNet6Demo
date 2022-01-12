@@ -1,10 +1,12 @@
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyNet6Demo.Core.Artists.Commands;
 using MyNet6Demo.Core.Artists.Queries;
 
 namespace MyNet6Demo.Api.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     public class ArtistsController : ControllerBase
     {
@@ -15,6 +17,7 @@ namespace MyNet6Demo.Api.Controllers
             _mediator = mediator;
         }
 
+        [AllowAnonymous]
         [HttpGet("{guid}", Name = "GetArtistByGuidAsync")]
         public async Task<IActionResult> GetArtistByGuidAsync(Guid guid, CancellationToken cancellationToken)
         {
@@ -25,6 +28,7 @@ namespace MyNet6Demo.Api.Controllers
             return Ok(artist);
         }
 
+        [AllowAnonymous]
         [HttpGet(Name = "GetArtistListAsync")]
         public async Task<IActionResult> GetArtistListAsync([FromQuery] GetArtistListQuery query, CancellationToken cancellationToken)
         {
@@ -39,7 +43,7 @@ namespace MyNet6Demo.Api.Controllers
         public async Task<IActionResult> ExportArtistListAsync(CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            
+
             var csv = await _mediator.Send(new ExportArtistListQuery());
 
             return File(csv.Content, csv.ContentType, csv.FileName);

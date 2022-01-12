@@ -1,10 +1,12 @@
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyNet6Demo.Core.Songs.Commands;
 using MyNet6Demo.Core.Songs.Queries;
 
 namespace MyNet6Demo.Api.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     public class SongsController : ControllerBase
     {
@@ -15,6 +17,7 @@ namespace MyNet6Demo.Api.Controllers
             _mediator = mediator;
         }
 
+        [AllowAnonymous]
         [HttpGet("{guid}", Name = "GetSongByGuidAsync")]
         public async Task<IActionResult> GetSongByGuidAsync(Guid guid, CancellationToken cancellationToken)
         {
@@ -25,6 +28,7 @@ namespace MyNet6Demo.Api.Controllers
             return Ok(song);
         }
 
+        [AllowAnonymous]
         [HttpGet(Name = "GetSongListAsync")]
         public async Task<IActionResult> GetSongListAsync([FromQuery] GetSongListQuery query, CancellationToken cancellationToken)
         {
