@@ -31,7 +31,7 @@ namespace MyNet6Demo.Core.Albums.Queries
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            var items = await _albumRepository.GetQuery().ToListAsync(cancellationToken);
+            var items = await _albumRepository.GetListAsync(cancellationToken);
 
             var records = _mapper.Map<IEnumerable<AlbumExportRecord>>(items);
 

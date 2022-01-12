@@ -20,6 +20,8 @@ namespace MyNet6Demo.Core.Mappings
             CreateMap<Song, SongExportRecord>();
 
             CreateMap<Artist, ArtistViewModel>();
+
+            CreateMap<Artist, ArtistExportRecord>();
         }
     }
 }
