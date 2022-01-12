@@ -26,6 +26,8 @@ namespace MyNet6Demo.Domain.DomainEvents
         public override async Task Handle(ArtistDeletedEvent domainEvent)
         {
             _logger.LogInformation("--> Received Artist Deleted");
+
+            await Task.CompletedTask;
         }
     }
 }

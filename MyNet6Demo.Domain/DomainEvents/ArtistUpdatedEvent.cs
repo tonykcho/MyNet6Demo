@@ -23,6 +23,8 @@ namespace MyNet6Demo.Domain.DomainEvents
         public override async Task Handle(ArtistUpdatedEvent domainEvent)
         {
             _logger.LogInformation("--> Received Artist Updated Event");
+
+            await Task.CompletedTask;
         }
     }
 }

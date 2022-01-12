@@ -26,6 +26,8 @@ namespace MyNet6Demo.Domain.DomainEvents
         public override async Task Handle(SongCreatedEvent domainEvent)
         {
             _logger.LogInformation("--> Received Song Created!!!");
+
+            await Task.CompletedTask;
         }
     }
 }

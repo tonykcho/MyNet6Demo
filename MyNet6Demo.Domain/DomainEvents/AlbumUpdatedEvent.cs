@@ -25,6 +25,8 @@ namespace MyNet6Demo.Domain.DomainEvents
         public async Task Handle(AlbumUpdatedEvent domainEvent)
         {
             _logger.LogInformation("--> Received album updated!!!");
+            
+            await Task.CompletedTask;
         }
     }
 }

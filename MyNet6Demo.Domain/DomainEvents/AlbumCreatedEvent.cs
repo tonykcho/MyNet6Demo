@@ -24,6 +24,8 @@ namespace MyNet6Demo.Domain.DomainEvents
         public override async Task Handle(AlbumCreatedEvent domainEvent)
         {
             _logger.LogInformation("--> Received album created!!!");
+
+            await Task.CompletedTask;
         }
     }
 }

@@ -13,6 +13,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <NoWarn>8618,8603</NoWarn>
   </PropertyGroup>
 
 </Project>

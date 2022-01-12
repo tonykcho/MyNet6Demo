@@ -32,7 +32,7 @@ namespace MyNet6Demo.Core.Services
                 return;
             }
 
-            var type = DomainEventMap[eventName];
+            Type type = DomainEventMap[eventName];
 
             dynamic domainEvent = JsonSerializer.Deserialize(message, type);
 
