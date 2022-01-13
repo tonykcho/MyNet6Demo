@@ -140,7 +140,6 @@ else
     builder.Services.AddSingleton<IFirebaseMessagingService, FirebaseMessagingMockService>();
 }
 
-
 var app = builder.Build();
 
 await app.MigrateSchemaAsync();

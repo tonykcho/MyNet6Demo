@@ -14,5 +14,19 @@ spec:
       containers:
       - name: net-deployment
         image: tony3527657/net6demo
+        imagePullPolicy: Always
         ports:
         - containerPort: 80
+        volumeMounts:
+          - mountPath: /app/logs
+            name: log-volume
+          - mountPath: /app/firebase_credential.json
+            subPath: firebase_credential.json
+            name: firebase-config-volume
+      volumes:
+        - name: log-volume
+          hostPath:
+            path: /Users/tony/Desktop/app
+        - name: firebase-config-volume
+          configMap:
+            name: firebase-config
