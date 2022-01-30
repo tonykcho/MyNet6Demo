@@ -16,13 +16,23 @@ using MyNet6Demo.Domain.DomainEvents;
 using MyNet6Demo.Core.Interfaces;
 using FirebaseAdmin;
 using Google.Apis.Auth.OAuth2;
-
-Log.Logger = new LoggerConfiguration()
-    .WriteTo.Console()
-    .WriteTo.File("logs/log_.txt", rollingInterval: RollingInterval.Day)
-    .CreateLogger();
+using Serilog.Sinks.Elasticsearch;
+using System;
 
 var builder = WebApplication.CreateBuilder(args);
+
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Information()
+    .WriteTo.Console()
+    .WriteTo.File($"logs/log_{DateTime.UtcNow.Date.ToString("yyyy_MM_dd")}.txt")
+    // .WriteTo.File("logs/log_.txt", rollingInterval: RollingInterval.Day)
+    .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri($"http://{builder.Configuration["ElasticSearchHost"]}:{builder.Configuration["ElasticSearchPort"]}"))
+    {
+        IndexFormat = $"Net_Demo_Api_Logs",
+        AutoRegisterTemplate = true,
+        AutoRegisterTemplateVersion = AutoRegisterTemplateVersion.ESv7
+    })
+    .CreateLogger();
 
 builder.Host.UseSerilog();
 
@@ -72,7 +82,8 @@ builder.Services.AddSingleton<IMessageBusClient, RabbitMQMessageBusClient>();
 
 builder.Services.AddHealthChecks()
     .Add(new HealthCheckRegistration("Mysql", sp => new MySqlHealthCheck(sp.GetRequiredService<AppDbContext>()), default, default))
-    .Add(new HealthCheckRegistration("RabbitMQ", sp => new RabbitMQHealthCheck(sp.GetRequiredService<IRabbitMQConnectionManager>()), default, default));
+    .Add(new HealthCheckRegistration("RabbitMQ", sp => new RabbitMQHealthCheck(sp.GetRequiredService<IRabbitMQConnectionManager>()), default, default))
+    .Add(new HealthCheckRegistration("ElasticSearch", sp => new ElasticSearchHealthCheck(sp.GetRequiredService<IConfiguration>()), default, default));
 
 builder.Services.AddSingleton<IDomainEventProcessor, DomainEventProcessor>((sp) =>
 {
@@ -140,6 +151,15 @@ else
     builder.Services.AddSingleton<IFirebaseMessagingService, FirebaseMessagingMockService>();
 }
 
+builder.Services.AddHttpLogging(logging => {
+    logging.LoggingFields = Microsoft.AspNetCore.HttpLogging.HttpLoggingFields.RequestQuery
+        | Microsoft.AspNetCore.HttpLogging.HttpLoggingFields.RequestBody
+        | Microsoft.AspNetCore.HttpLogging.HttpLoggingFields.ResponseBody
+        | Microsoft.AspNetCore.HttpLogging.HttpLoggingFields.Response;
+    logging.RequestBodyLogLimit = 4096;
+    logging.ResponseBodyLogLimit = 4096;
+});
+
 var app = builder.Build();
 
 await app.MigrateSchemaAsync();
@@ -172,5 +192,7 @@ app.MapHealthChecks("api/health_checks", new HealthCheckOptions()
 });
 
 app.MapControllers();
+
+app.UseHttpLogging();
 
 app.Run();
