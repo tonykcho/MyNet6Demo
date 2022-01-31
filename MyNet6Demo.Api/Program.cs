@@ -17,7 +17,7 @@ using MyNet6Demo.Core.Interfaces;
 using FirebaseAdmin;
 using Google.Apis.Auth.OAuth2;
 using Serilog.Sinks.Elasticsearch;
-using System;
+using Microsoft.AspNetCore.HttpLogging;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -152,10 +152,10 @@ else
 }
 
 builder.Services.AddHttpLogging(logging => {
-    logging.LoggingFields = Microsoft.AspNetCore.HttpLogging.HttpLoggingFields.RequestQuery
-        | Microsoft.AspNetCore.HttpLogging.HttpLoggingFields.RequestBody
-        | Microsoft.AspNetCore.HttpLogging.HttpLoggingFields.ResponseBody
-        | Microsoft.AspNetCore.HttpLogging.HttpLoggingFields.Response;
+    logging.LoggingFields = HttpLoggingFields.RequestQuery
+        | HttpLoggingFields.RequestBody
+        | HttpLoggingFields.ResponseBody
+        | HttpLoggingFields.Response;
     logging.RequestBodyLogLimit = 4096;
     logging.ResponseBodyLogLimit = 4096;
 });
