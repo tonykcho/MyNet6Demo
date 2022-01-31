@@ -1,5 +1,6 @@
 using FirebaseAdmin.Messaging;
 using Microsoft.AspNetCore.Mvc;
+using MyNet6Demo.Core.Interfaces;
 using MyNet6Demo.Domain.Interfaces;
 
 namespace MyNet6Demo.Api.Controllers
@@ -9,9 +10,12 @@ namespace MyNet6Demo.Api.Controllers
     {
         private readonly IFirebaseMessagingService _firebaseMessagingService;
 
-        public CommonsController(IFirebaseMessagingService firebaseMessagingService)
+        private readonly IImageService _imageService;
+
+        public CommonsController(IFirebaseMessagingService firebaseMessagingService, IImageService imageService)
         {
             _firebaseMessagingService = firebaseMessagingService;
+            _imageService = imageService;
         }
 
         [HttpGet]
@@ -50,6 +54,24 @@ namespace MyNet6Demo.Api.Controllers
             await _firebaseMessagingService.SendMultipleAsync(tokens, notification, payload);
 
             return NoContent();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UploadImage(IFormFile image, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+
+            await _imageService.UploadImageAsync(image, cancellationToken);
+
+            return Ok();
+        }
+
+        [HttpGet("image")]
+        public async Task<IActionResult> DownloadImage(CancellationToken cancellationToken)
+        {
+            var image = await _imageService.DownloadImageAsync("5f1ef3df-5449-47e7-a1d9-621fdf27bd3e_Cover.png", cancellationToken);
+
+            return File(image, "image/png");
         }
     }
 }

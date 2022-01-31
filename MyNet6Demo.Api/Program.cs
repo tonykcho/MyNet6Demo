@@ -75,6 +75,8 @@ builder.Services.AddScoped<IArtistRepository, ArtistRepository>();
 
 builder.Services.AddScoped<ICsvFileBuilder, CsvFileBuilder>();
 
+builder.Services.AddScoped<IImageService, ImageService>();
+
 builder.Services.AddSingleton<IRabbitMQConnectionManager, RabbitMQConnectionManager>();
 
 builder.Services.AddSingleton<IMessageBusClient, RabbitMQMessageBusClient>();
