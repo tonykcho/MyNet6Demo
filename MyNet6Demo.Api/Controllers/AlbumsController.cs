@@ -18,16 +18,26 @@ namespace MyNet6Demo.Api.Controllers
             _mediator = mediator;
         }
 
-
         [AllowAnonymous]
         [HttpGet("{guid}", Name = "GetAlbumByGuidAsync")]
-        public async Task<IActionResult> GetAlbumByGuidAsync(Guid guid, CancellationToken cancellationToken)
+        public async Task<IActionResult> GetAlbumByGuidAsync([FromRoute] Guid guid, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
             var album = await _mediator.Send(new GetAlbumByGuidQuery { Guid = guid }, cancellationToken);
 
             return Ok(album);
+        }
+
+        [AllowAnonymous]
+        [HttpGet("{guid}/image", Name = "GetAlbumImageByGuidAsync")]
+        public async Task<IActionResult> GetAlbumImageByGuidAsync([FromRoute] Guid guid, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+
+            var imageContent = await _mediator.Send(new GetAlbumImageByGuidQuery { Guid = guid }, cancellationToken);
+
+            return File(imageContent.Image, imageContent.ContentType);
         }
 
         [AllowAnonymous]
@@ -50,8 +60,7 @@ namespace MyNet6Demo.Api.Controllers
         }
 
         [HttpPost(Name = "CreateAlbumAsync")]
-        [Consumes(MediaTypeNames.Application.Json)]
-        public async Task<IActionResult> CreateAlbumAsync([FromBody] CreateAlbumCommand command, CancellationToken cancellationToken)
+        public async Task<IActionResult> CreateAlbumAsync([FromForm] CreateAlbumCommand command, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
@@ -62,7 +71,22 @@ namespace MyNet6Demo.Api.Controllers
 
         [HttpPut("{guid}", Name = "UpdateAlbumAsync")]
         [Consumes(MediaTypeNames.Application.Json)]
-        public async Task<IActionResult> UpdateAlbumAsync(Guid guid, [FromBody] UpdateAlbumCommand command, CancellationToken cancellationToken)
+        public async Task<IActionResult> UpdateAlbumAsync([FromRoute] Guid guid, [FromBody] UpdateAlbumCommand command, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+
+            if (guid != command.Guid)
+            {
+                return BadRequest();
+            }
+
+            await _mediator.Send(command);
+
+            return NoContent();
+        }
+
+        [HttpPut("{guid}/image", Name = "UpdateAlbumImageAsync")]
+        public async Task<IActionResult> UpdateAlbumImageAsync([FromRoute] Guid guid, [FromForm] UploadAlbumImageCommand command, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
@@ -77,7 +101,7 @@ namespace MyNet6Demo.Api.Controllers
         }
 
         [HttpDelete("{guid}", Name = "DeleteAlbumAsync")]
-        public async Task<IActionResult> DeleteAlbumAsync(Guid guid, CancellationToken cancellationToken)
+        public async Task<IActionResult> DeleteAlbumAsync([FromRoute] Guid guid, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
 

@@ -14,6 +14,10 @@ namespace MyNet6Demo.Domain.Models
 
         public DateTime ReleaseDate { get; set; }
 
+        public string? ImagePath { get; set; }
+
+        public string? ImageContentType { get; set; }
+
         public ICollection<Song> Songs { get; set; } = new List<Song>();
 
         [JsonIgnore]

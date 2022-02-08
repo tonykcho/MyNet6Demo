@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyNet6Demo.Infrastructure.DbContexts;
 
@@ -10,9 +11,10 @@ using MyNet6Demo.Infrastructure.DbContexts;
 namespace MyNet6Demo.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220207083710_album_image")]
+    partial class album_image
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -45,9 +47,6 @@ namespace MyNet6Demo.Infrastructure.Migrations
 
                     b.Property<Guid>("Guid")
                         .HasColumnType("char(36)");
-
-                    b.Property<string>("ImageContentType")
-                        .HasColumnType("longtext");
 
                     b.Property<string>("ImagePath")
                         .HasColumnType("longtext");

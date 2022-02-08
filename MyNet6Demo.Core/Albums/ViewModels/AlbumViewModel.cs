@@ -12,6 +12,8 @@ namespace MyNet6Demo.Core.Albums.ViewModels
 
         public DateTime ReleaseDate { get; set; }
 
+        public string? ImagePath { get; set; }
+
         public IEnumerable<SongViewModel> Songs { get; set; }
     }
 }

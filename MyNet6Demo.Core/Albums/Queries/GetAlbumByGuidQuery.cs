@@ -39,14 +39,14 @@ namespace MyNet6Demo.Core.Albums.Queries
 
             Album album = await _albumRepository.GetByGuidAsync(request.Guid, cancellationToken);
 
-            await _albumRepository.Entry(album)
-                .Collection(album => album.Songs)
-                .LoadAsync();
-
             if (album is null)
             {
                 throw new ResourceNotFoundException(nameof(album));
             }
+
+            await _albumRepository.Entry(album)
+                .Collection(album => album.Songs)
+                .LoadAsync();
 
             AlbumViewModel view = _mapper.Map<AlbumViewModel>(album);
 

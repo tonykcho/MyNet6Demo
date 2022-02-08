@@ -21,6 +21,8 @@ namespace MyNet6Demo.Core.Services
 
             string uploadsFolder = Path.Combine(_webHostEnvironment.ContentRootPath, "images");
 
+            Directory.CreateDirectory(uploadsFolder);
+
             string uniqueFileName = $"{Guid.NewGuid().ToString()}_{image.FileName}";
 
             string filePath = Path.Combine(uploadsFolder, uniqueFileName);

@@ -9,5 +9,7 @@ namespace MyNet6Demo.Core.Albums.ViewModels
         public string Circle { get; set; }
 
         public DateTime ReleaseDate { get; set; }
+
+        public string? ImagePath { get; set; }
     }
 }
