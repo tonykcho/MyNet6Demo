@@ -8,3 +8,5 @@ dotnet ef migrations add <migration_name> -s ../MyNet6Demo.Api -o ./Migrations -
 
 # Remove Migration
 dotnet ef migrations remove -s ../MyNet6Demo.Api
+
+Testing Pulling
